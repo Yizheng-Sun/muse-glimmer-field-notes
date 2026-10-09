@@ -1,66 +1,101 @@
-# Prepare the coding cases
+# Coding cases: local preparation complete
 
-Current status: **no candidates have been selected or verified yet.** First prepare one complete case, then repeat for the other three.
+Four cases are **prepared locally**, selected on 9 October 2026 from Click and Packaging. Each unchanged behavior check fails on its pinned starting commit and passes on its upstream fixed commit on this Mac. **5090/Linux preparation and agent isolation remain pending. No scored Glimmer attempt has been run.**
 
-## 1. Find bounded, recent problems
+| Case | Repository | Observable requirement | PR report / merge date | Local check methods | Status |
+| --- | --- | --- | --- | --- | --- |
+| [C01](C01/prompt.md) | Click | Environment-variable hints handle sequences and empty values | 6 Oct / 6 Oct | 6 | Prepared locally |
+| [C02](C02/prompt.md) | Click | Generated short help preserves abbreviations and respects width | 11 Sep / 12 Sep | 5 | Prepared locally |
+| [C03](C03/prompt.md) | Packaging | Direct-reference requirement URLs reject embedded line breaks | 10 Aug / 1 Oct | 3 | Prepared locally |
+| [C04](C04/prompt.md) | Packaging | License-file validation rejects Windows drive-relative paths | 11 Aug / 2 Oct | 4 | Prepared locally |
 
-Scan three to five repositories for tools you use or understand. Aim for roughly 12 candidates, with a two-hour discovery budget. Favor selecting the final four from one or two repositories so dependencies can be reused.
+All dates above are in 2026, UTC. PR creation is the earliest verified report for these four; none has a linked standalone issue. Recent **merges** were the selection criterion, so the older Packaging report dates are disclosed. C02 uses the permitted 30-day expansion to keep two source repositories and add a text-formatting case. These are small calibration problems, not a representative benchmark of general coding ability.
 
-Use the recent-merge window in [PLAN.md](../../PLAN.md). Prefer a clear user-visible problem, a small meaningful patch, quick setup and a reproducible symptom. Check the original issue date too. Save exclusions and their reasons. The source repositories can be downloaded into ignored `.runs/cache/` folders; they do not need to become submodules or tracked copies in this project.
+[Candidate ledger](../../results/candidates.csv) records 14 inspected candidates and selection decisions. [Selection notes](../../results/coding-selection.md) cover the five repositories scanned, exclusions and authorship caveats. [Local evidence](../../evidence/preparation/README.md) records actual failures, passes, environment and file hashes. Upstream patches are reference fixes; absence of an AI disclosure does not prove solely human authorship.
 
-## 2. Create a case definition here
+## Files and dependencies
 
-Copy `_template/` to `C01/` for the first selected candidate:
+| File | Purpose | Agent input? |
+| --- | --- | --- |
+| `Cxx/case.json` | Full commit hashes, source URLs/dates and reproducible commands | No |
+| `Cxx/prompt.md` | Adapted, sanitized observable requirement | Yes |
+| `Cxx/check.py` | Reviewer-side behavioral acceptance check | No |
+| `Cxx/review.md` | Upstream solution, preparation evidence and pending run notes | No |
+| `scripts/prepare_case.py` | The only preparation helper | No |
+
+Use **Git and Python 3.12+** for the helper. The upstream code supports Python 3.10+, but this helper requires 3.12+ for safe archive extraction. There are **no third-party dependencies** for these checks: they import each pinned source's `src/` directly and verify import provenance. No project build, editable install, Docker setup or changes to the installed Hermes environment are needed.
+
+The helper fetches exact commits into `.runs/cache/`, creates clean `.runs/coding/Cxx/base` and `fixed` snapshots without Git history, and writes raw logs and verification JSON under `.runs/coding/Cxx/logs/<UTC timestamp>/`. Repeating preparation rebuilds only the two reference snapshots and keeps earlier logs. It never overwrites an exported agent copy. Keep all these generated files ignored.
+
+## Exact preparation commands on the 5090
+
+Run inside this same repository's clone using its existing GitHub authentication. For the first clone:
 
 ```sh
-cp -R cases/coding/_template cases/coding/C01
+git clone https://github.com/Yizheng-Sun/muse-glimmer-field-notes.git
+cd muse-glimmer-field-notes
 ```
 
-Fill these files:
-
-| File | Contents | Give to Glimmer? |
-| --- | --- | --- |
-| `case.json` | Repository URL, pinned starting/fixed revisions, source links, setup/check commands and selection status | No; human preparation metadata |
-| `prompt.md` | Observable problem, expected behavior and allowed scope | Yes |
-| `review.md` | Human solution notes, before/after evidence, adaptations and eventual verdict | No |
-
-Use full commit hashes for both versions. If a PR is merged with multiple commits, confirm that the starting revision actually precedes its changes; do not assume the parent of the last PR commit is the broken version.
-
-Keep the prompt free of the human patch, fixed revision, PR solution description, identifying source links and instructions that give away the implementation. Add only the reproduction and success criteria the agent would legitimately receive.
-
-## 3. Pull and verify on the 5090
-
-Push the case definition from here and pull it on the 5090. Before preparation, confirm the checkout has no unintended local edits and record the experiment repository's commit:
+For an existing checkout, pull before starting. Set `CASE_PYTHON` to an **existing Python 3.12+ interpreter**; use `python3.12` instead of `python3` if necessary. It need not be the Hermes interpreter.
 
 ```sh
 git pull --ff-only
+git status --short
 git rev-parse HEAD
+CASE_PYTHON=python3
+"$CASE_PYTHON" -c 'import sys; print(sys.version); assert sys.version_info >= (3, 12), "Use Python 3.12+"'
+"$CASE_PYTHON" scripts/prepare_case.py all --verify
 ```
 
-Inside this same checkout, use ignored `.runs/` directories to:
+Resolve unintended checkout edits before pulling. Source download needs internet access. Successful verification reports **base=1, fixed=0** for every case. Exit 1 from a check means behavioral failure; exit 2 means setup/import failure and must not be counted as a reproduced bug. The helper exits 2 if preparation or either expected result fails. Inspect the generated logs, record the Linux Python/OS details and setup duration in the reviews, and save concise 5090 evidence before changing any case's remote-validation status.
 
-1. Download the upstream source and generate a clean source snapshot at `base_commit`, without `.git` history.
-2. Install dependencies and run the chosen reproduction/check. Save the failure output.
-3. Generate a separate temporary reference snapshot at `fixed_commit`, run the same check and save the passing output.
-4. Review whether the check proves the required behavior, including relevant existing tests. It should accept a correct alternative patch.
+The same checks can be run separately:
 
-All generated folders live inside the project checkout. Source downloads, dependency installation and human verification can use the network. During Glimmer's scored attempt, block public-internet access and restrict its filesystem to the prompt and pre-fix source. Ensure all tools, including file reads and shell commands, respect the same boundary. Retain the local inference connection.
+```sh
+"$CASE_PYTHON" -I cases/coding/C01/check.py --source .runs/coding/C01/base
+"$CASE_PYTHON" -I cases/coding/C01/check.py --source .runs/coding/C01/fixed
+```
 
-Use a generated run folder such as `.runs/coding/C01/attempt-01/`. A fresh attempt must start from the pinned broken source, not a previous agent patch. Keep reference snapshots and preparation caches outside the agent's accessible filesystem.
+Substitute C02, C03 or C04 to inspect another case. The baseline command is deliberately expected to fail. Fixed commands must pass. The checks exercise public behavior and controls; they do not compare the code with the upstream patch.
 
-Do not add new infrastructure until one manually prepared case works. A preparation helper can be included in the planned `run_case.py` later if repeating these steps becomes tedious.
+## Prepare agent inputs, then validate the boundary
 
-## 4. Mark ready, then freeze selection
+After all Linux before/after checks pass, export fresh input copies:
 
-Update the metadata and review notes after verification. A case is ready only when:
+```sh
+"$CASE_PYTHON" scripts/prepare_case.py all --export
+```
 
-- [ ] The starting and fixed revisions are pinned.
-- [ ] Setup works on the 5090 within the preparation budget.
-- [ ] The same meaningful check fails before and passes after the human fix.
-- [ ] The prompt contains the requirement without the solution.
-- [ ] Before/after logs are saved and any prompt adaptation is disclosed.
-- [ ] Glimmer's tool boundary excludes reference material and the experiment repository.
+For each case this creates `.runs/coding/Cxx/agent/prompt.md` and `agent/source/`, containing only the sanitized prompt and broken source. Export refuses to overwrite an existing `agent/` folder. Preserve any attempted patch/transcript and give a later attempt a new folder; do not erase it to repeat a scored run.
 
-Commit the metadata, review notes and selected verification evidence on the 5090, then push and pull here. Never commit dependency environments, full upstream checkouts or raw logs just to move them between machines.
+Export **does not enforce isolation or start an agent**. Before a scored attempt, use the existing runtime's filesystem/container boundary to expose only that case's `agent/` folder. Verify that every agent tool cannot access the shared checkout, metadata/review/check files, fixed source, cache or other cases. Disable browsing and public-internet access while retaining the local inference connection. A changed working directory or a prompt instruction is insufficient. Do not mark a case ready for a blind run until this boundary is verified.
 
-Repeat for `C02`–`C04`, targeting variety where practical. Freeze the four cases before scored attempts. Each attempt has the plan's 30-minute and 60-tool-call budget; retain failures and assistance records.
+The prompts invite regression tests in the upstream source. Before isolation, prepare their test runner inside each exported source, separate from Hermes. The minimal pin below comes from the selected Click snapshots' `uv.lock`. These optional upstream-test commands have **not** been executed here; availability and execution inside the 5090 boundary remain a preflight check. The four reviewer acceptance checks above do not need pytest.
+
+```sh
+for CASE_ID in C01 C02 C03 C04; do
+  CASE_SOURCE=".runs/coding/$CASE_ID/agent/source"
+  "$CASE_PYTHON" -m venv "$CASE_SOURCE/.venv"
+  "$CASE_SOURCE/.venv/bin/python" -m pip install pytest==9.0.2
+done
+```
+
+From inside a case's exported `source/`, use `PYTHONPATH=src PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest` with these focused targets: C01 `tests/test_options.py -k envvar`; C02 `tests/test_utils/test_make_default_short_help.py`; C03 `tests/test_requirements.py`; C04 `tests/test_metadata.py -k license_files`. Confirm the runner works before blocking downloads; the full upstream suites may need additional dependencies.
+
+After a future attempt, the reviewer can check the edited agent source from outside the agent boundary:
+
+```sh
+"$CASE_PYTHON" -I cases/coding/C01/check.py --source .runs/coding/C01/agent/source
+```
+
+Also inspect the patch and run relevant upstream tests as appropriate. The preparation checks are bounded acceptance checks, not the full upstream suites. Record assistance and retain failed attempts. The final four are selected; do not replace them because Glimmer struggles. Freeze runtime settings before scoring and apply the plan's 30-minute / 60-tool-call budget.
+
+## Remaining readiness checks
+
+- [x] Four cases pinned; sanitized prompts, behavioral checks and local evidence committed.
+- [x] Same check demonstrably fails before and passes after each upstream fix on this Mac.
+- [ ] Repeat preparation on the 5090 and record Linux evidence and setup duration.
+- [ ] Verify agent filesystem/network isolation and fresh-session behavior on the 5090.
+- [ ] Prepare and confirm upstream test-runner availability inside the agent boundary if using pytest regressions.
+- [ ] Record and freeze the existing model/runtime settings.
+- [ ] Run the four scored attempts later, preserving all outcomes.

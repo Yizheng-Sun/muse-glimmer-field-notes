@@ -1,0 +1,57 @@
+{
+  "case_id": "C03",
+  "verified_at": "20261009T161733.271883Z",
+  "experiment_commit": "e57a6964e0c9706f3b7b8f944f8575c3b395c45f",
+  "experiment_worktree_dirty": true,
+  "base_commit": "23669b1b69fb5fffbc773a68fc099166fc847356",
+  "fixed_commit": "2602dd07d8bd5d6c54a3ce0e212f52eb2e127f3e",
+  "check_sha256": "9f86e5f03386b64c7411fcbf81d62d4f740c8d46f596de271f3ab48e5f1aba56",
+  "prompt_sha256": "bcdb65378b6594b289f40d882117bda6eb742b9d131bbcf1f49e7604b6f99ce7",
+  "helper_sha256": "f6a3fd04b5391a9b742d513ba424fe1f18c013cba5b90f7d692b3773ea2bb0ab",
+  "prepared_locally": true,
+  "preparation_elapsed_seconds": 0.28,
+  "capture_note": "Verified the new files in the worktree before their final commit. File SHA-256 hashes identify the exact check/prompt/helper that are committed alongside this evidence.",
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+    "executable": "<HOME>/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "platform": "macOS-26.7.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "git": "git version 2.50.1 (Apple Git-155)",
+    "dependencies": "none",
+    "source_cache": "warm cache; elapsed preparation time is not a first-download measurement"
+  },
+  "raw_report": ".runs/coding/C03/logs/20261009T161733.271883Z/verification.json",
+  "raw_report_sha256": "209db5b422498aed86b5b9f9c236115bf8dcfa669cd3d6da2b7ab5f2838f0583",
+  "setup_command": "python3 scripts/prepare_case.py C03 --verify",
+  "case_metadata_sha256": "24140847db31635382a6945905536ffbc5d2cd3556d3f448afbceeccb0bae71d",
+  "base": {
+    "source": ".runs/coding/C03/base",
+    "command": "python3 -B -I cases/coding/C03/check.py --source .runs/coding/C03/base",
+    "exit_code": 1,
+    "elapsed_seconds": 0.047,
+    "assertion_failures": 6,
+    "summary": [
+      "Ran 3 tests in 0.001s",
+      "FAILED (failures=6)"
+    ],
+    "output_excerpt": "FAIL: test_line_breaks_in_urls_are_rejected (__main__.main.<locals>.RequirementUrlChecks.test_line_breaks_in_urls_are_rejected) (line_break=\"'\\\\n'\", tail='')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<repo>/cases/coding/C03/check.py\", line 49, in test_line_breaks_in_urls_are_rejected\n    with self.assertRaises(InvalidRequirement):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: InvalidRequirement not raised\n",
+    "raw_log": ".runs/coding/C03/logs/20261009T161733.271883Z/base.log",
+    "raw_log_sha256": "debe350facdc1dc190d59eb9e84cd698cfb0d18ca357daf715d2806a3885327c"
+  },
+  "fixed": {
+    "source": ".runs/coding/C03/fixed",
+    "command": "python3 -B -I cases/coding/C03/check.py --source .runs/coding/C03/fixed",
+    "exit_code": 0,
+    "elapsed_seconds": 0.05,
+    "assertion_failures": 0,
+    "summary": [
+      "Ran 3 tests in 0.000s",
+      "OK"
+    ],
+    "output_excerpt": "Python: 3.12.14\nSource: <repo>/.runs/coding/C03/fixed\nImported: <repo>/.runs/coding/C03/fixed/src/packaging/requirements.py\ntest_line_breaks_in_urls_are_rejected (__main__.main.<locals>.RequirementUrlChecks.test_line_breaks_in_urls_are_rejected) ... ok\ntest_valid_direct_urls_and_horizontal_whitespace (__main__.main.<locals>.RequirementUrlChecks.test_valid_direct_urls_and_horizontal_whitespace) ... ok\ntest_valid_url_markers_and_ordinary_requirements (__main__.main.<locals>.RequirementUrlChecks.test_valid_url_markers_and_ordinary_requirements) ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK",
+    "raw_log": ".runs/coding/C03/logs/20261009T161733.271883Z/fixed.log",
+    "raw_log_sha256": "9c2713b5418ecefb5ef8a22b9b68cf950050224405725c0d22aa3d631adba2fa"
+  },
+  "remote_5090_validation": "pending",
+  "scored_attempt": "not_run"
+}

@@ -1,0 +1,79 @@
+{
+  "id": "C02",
+  "title": "Generated short help preserves abbreviations and width rules",
+  "category": "user-visible text-processing bug",
+  "status": "prepared_locally",
+  "repo_url": "https://github.com/pallets/click",
+  "issue_url": null,
+  "issue_reported_at": null,
+  "original_report": {
+    "kind": "pull_request",
+    "url": "https://github.com/pallets/click/pull/3865",
+    "reported_at": "2026-09-11T06:25:50Z",
+    "notes": "No separate issue is linked in the PR body; its author reports abbreviations prematurely ending generated summaries."
+  },
+  "pr_url": "https://github.com/pallets/click/pull/3865",
+  "pr_created_at": "2026-09-11T06:25:50Z",
+  "pr_merged_at": "2026-09-12T02:35:08Z",
+  "base_commit": "d036881798e34289a49b18a5c550c7cf687e5a7a",
+  "fixed_commit": "70689853e39c30e36eb0d83d586cc914a74db9d3",
+  "commit_boundary": "Verified first parent of the merged fix, before its sole feature commit f67c2bb6c2f055c1c7a57cd46c3697fc26a7742e. The PR API base SHA differs from this parent and was not used.",
+  "changed_files": [
+    "CHANGES.md",
+    "src/click/utils.py",
+    "tests/test_utils/test_make_default_short_help.py"
+  ],
+  "meaningful_production_files": 1,
+  "selection_window": {
+    "from": "2026-09-09",
+    "through": "2026-10-09",
+    "expanded": true,
+    "reason": "The two-week Click window supplied only one bounded behavior fix; expanded to the requested 30-day window for a quick independent text-processing case."
+  },
+  "setup_commands": [
+    "python3 scripts/prepare_case.py C02 --verify",
+    "python3 scripts/prepare_case.py C02 --export"
+  ],
+  "check_commands": [
+    "python3 cases/coding/C02/check.py --source .runs/coding/C02/base",
+    "python3 cases/coding/C02/check.py --source .runs/coding/C02/fixed"
+  ],
+  "runtime_requirements": {
+    "source_python": ">=3.10",
+    "preparation_helper_python": ">=3.12",
+    "dependencies": [],
+    "setup_estimate_minutes": 5
+  },
+  "prompt_adapted": true,
+  "adaptation_notes": "Rephrased the brief PR report as a public Command and group-help reproduction. Explicitly states the observable sentence, width, hyphenated-word and narrow-width contracts represented by upstream tests so they are not hidden grader expectations. Removes the private helper name, the suggested textwrap implementation, PR links, IDs and fixed SHA.",
+  "upstream_solution_provenance": {
+    "author": "Kevin Deldycke",
+    "review": "Approved by Rowlando13",
+    "ai_disclosure_observed": false,
+    "inspected": [
+      "PR body",
+      "issue comments",
+      "review bodies",
+      "inline review comments",
+      "feature commit message"
+    ],
+    "notes": "No AI disclosure appears in inspected material. This is an upstream merged reference; human-only authorship was not independently established."
+  },
+  "local_validation": {
+    "python": "3.12.14",
+    "platform": "macOS 26.7.1 arm64",
+    "base_exit_code": 1,
+    "fixed_exit_code": 0,
+    "test_methods": 5,
+    "base_failing_subcases": 8,
+    "evidence": "evidence/preparation/C02.json",
+    "validated_on_5090": false
+  },
+  "remote_5090_validation": {
+    "status": "pending",
+    "notes": "Pull this repository, use Python3.12+, run preparation with --verify, record the exact experiment commit and machine environment; then validate the agent filesystem/network boundary before a scored run."
+  },
+  "scored_attempt": {
+    "status": "not_run"
+  }
+}

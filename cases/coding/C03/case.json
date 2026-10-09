@@ -1,0 +1,76 @@
+{
+  "id": "C03",
+  "title": "Reject line breaks in requirement URLs",
+  "category": "parser input edge case",
+  "status": "prepared_locally",
+  "repo_url": "https://github.com/pypa/packaging",
+  "issue_url": null,
+  "issue_reported_at": null,
+  "issue_date_note": "No separate linked issue found; GitHub closingIssuesReferences is empty. Use PR creation date below as the earliest verified report date.",
+  "pr_url": "https://github.com/pypa/packaging/pull/1379",
+  "pr_merged_at": "2026-10-01T13:47:32Z",
+  "base_commit": "23669b1b69fb5fffbc773a68fc099166fc847356",
+  "fixed_commit": "2602dd07d8bd5d6c54a3ce0e212f52eb2e127f3e",
+  "base_commit_basis": "Sole parent of the merged squash commit; precedes the whole accepted fix, not merely the last branch commit.",
+  "changed_files": [
+    "src/packaging/_tokenizer.py",
+    "tests/test_requirements.py"
+  ],
+  "setup_commands": [
+    "python3 scripts/prepare_case.py C03 --verify",
+    "python3 scripts/prepare_case.py C03 --export"
+  ],
+  "check_commands": [
+    "python3 cases/coding/C03/check.py --source .runs/coding/C03/base",
+    "python3 cases/coding/C03/check.py --source .runs/coding/C03/fixed"
+  ],
+  "agent_patch_check_command": "python3 cases/coding/C03/check.py --source .runs/coding/C03/agent/source",
+  "check_exit_codes": {
+    "0": "all behavior checks passed",
+    "1": "behavior assertion failure or unexpected behavior exception",
+    "2": "argument, source-path, Python-version, import or source-provenance setup error"
+  },
+  "python_requirement": "Python 3.12+ required for preparation helper; upstream supports Python>=3.10.",
+  "runtime_dependencies": [],
+  "check_dependencies": [],
+  "check_method": "stdlib unittest against exact source snapshot imports; public APIs and valid controls only.",
+  "prompt_adapted": true,
+  "adaptation_notes": "Rewrote the PR report as an observable requirement with a reproduction and preservation controls. Removed implementation hints, PR/issue links, authors, dates, solution text and fixed revisions. Added reviewer-side public-behavior checks independently of upstream test implementation.",
+  "authorship_note": "PR body does not disclose implementation AI usage. A review explicitly records automated authority-environment checks. Authorship is not independently established; describe the reference as the upstream merged fix.",
+  "local_validation": {
+    "python": "CPython 3.12.14",
+    "platform": "macOS arm64",
+    "base_exit_code": 1,
+    "fixed_exit_code": 0,
+    "test_methods": 3,
+    "expected_base_assertion_failures": 6,
+    "remaining_5090_checks": [
+      "Run the preparation helper and the same before/after checks after pulling this repository.",
+      "Confirm Python and source-import provenance and save machine-specific preparation results.",
+      "Verify agent filesystem and public-internet isolation before a scored attempt."
+    ],
+    "validated_on_5090": false,
+    "evidence": "evidence/preparation/C03.json"
+  },
+  "scored_experiment_run": false,
+  "pr_created_at": "2026-08-10T11:43:04Z",
+  "selection_window": {
+    "from": "2026-09-25",
+    "through": "2026-10-09",
+    "expanded": false
+  },
+  "meaningful_production_files": 1,
+  "original_report": {
+    "kind": "pull_request",
+    "url": "https://github.com/pypa/packaging/pull/1379",
+    "reported_at": "2026-08-10T11:43:04Z",
+    "notes": "No separate linked issue found; GitHub closingIssuesReferences is empty. Use PR creation date below as the earliest verified report date."
+  },
+  "remote_5090_validation": {
+    "status": "pending",
+    "notes": "Repeat Linux preparation and verify agent filesystem/network boundary before scoring."
+  },
+  "scored_attempt": {
+    "status": "not_run"
+  }
+}

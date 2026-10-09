@@ -4,7 +4,7 @@ Prepared: 9 October 2026
 
 Target article: **Living With Muse Glimmer: A Local Always-On Agent With a Single 5090**
 
-Current status: **Muse Glimmer and Hermes are fully set up. The active phase is preparing the coding cases.** Use one GitHub repository, edited on this computer and pulled on the 5090 machine. Runtime installation is complete; record the existing settings rather than rebuilding the setup.
+Current status: **Muse Glimmer and Hermes are fully set up. C01–C04 are prepared and verified locally on this Mac; 5090 validation remains pending.** Use one GitHub repository, edited on this computer and pulled on the 5090 machine. Runtime installation is complete; record the existing settings rather than rebuilding the setup. The next step is to repeat case preparation on the 5090 and verify the agent boundary before scored attempts.
 
 Private repository: [Yizheng-Sun/muse-glimmer-field-notes](https://github.com/Yizheng-Sun/muse-glimmer-field-notes).
 
@@ -86,6 +86,7 @@ cases/coding/_template/          # copy to C01 ... C04 when selecting cases
 cases/coding/<case-id>/
   case.json                     # source and pinned revisions; human metadata
   prompt.md                     # sanitized request to give Glimmer
+  check.py                      # reviewer-side behavioral acceptance check
   review.md                     # references, verification and human verdict
 cases/workflows/W01.md ... W04.md
 .runs/coding/<case-id>/<run-id>/  # ignored, generated source and raw evidence
@@ -95,13 +96,15 @@ workspace/daily/
   outputs/                      # dated briefings, reading notes, drafts
 evidence/<run-id>/               # selected, redacted output, patch and checks
 results/
-  candidates.csv                # sources, selection and exclusions
+  candidates.csv                # inspected coding sources and selection decisions
+  coding-selection.md           # discovery scope and exclusions
   runs.csv                      # curated experiment outcomes
   schedule.csv                  # every expected scheduled execution
   diary.csv                     # actual usage, separate from curated tasks
   summary.md                    # tables and examples for the blog
 scripts/
-  run_case.py                    # optional thin CLI wrapper
+  prepare_case.py                # existing stdlib source preparation/verification
+  run_case.py                    # optional later thin CLI wrapper
   summarize.py                   # optional CSV-to-Markdown summary
 ```
 
@@ -136,7 +139,7 @@ Before selection, each candidate needs:
 
 Give Glimmer a clean pre-fix source snapshot without Git history, generated under `.runs/` from the case's pinned starting commit. Preinstall dependencies, disable browsing tools, and block public-internet access for the coding run while retaining access to the local model server. Keep the shared repository and human reference material outside the agent's filesystem boundary, and use fresh coding sessions without daily-workflow memory. Source downloads and verification happen before or after this isolated run.
 
-The preparation checklist and reusable files are in `cases/coding/`. The next milestone is **one reproducible case with a failing starting-version check and a passing human-fixed-version check**; prepare that end to end before filling the remaining three slots.
+The preparation checklist and reusable files are in `cases/coding/`. Local preparation is complete: four cases from two repositories, with actual failure/pass evidence and one helper. See `results/candidates.csv` and `results/coding-selection.md` for selection, including the 30-day expansion for C02 and upstream authorship caveats. Use “upstream reference fix” rather than asserting purely human authorship. A case marked `prepared_locally` still needs Linux and agent-boundary validation before scoring.
 
 Freeze the final four before testing. Allow one autonomous run per case, capped at **30 minutes and 60 tool calls**, with self-correction allowed inside that budget. Verify the resulting patch against the reproduction and relevant existing tests, and inspect whether it actually meets the requirement. A valid alternative to the human patch can pass.
 
@@ -208,4 +211,4 @@ Allow roughly four hours of contingency within the 32-hour ceiling. Protect the 
 - Freeze settings before scored runs. If a material change becomes necessary, label affected runs and preserve the earlier evidence.
 - Keep unsuccessful experiments. If preparation leaves fewer reproducible cases, report the shortfall rather than inventing results or extending the build indefinitely.
 
-The next milestone is small: **one pinned coding case, synchronized through the shared repository, with a demonstrated failure before the fix and a passing check after the human fix**. Once that works, prepare the remaining cases and run the experiments on the 5090.
+The next milestone is **repeat the four pinned cases on the 5090 and verify the agent boundary**. The cases are synchronized through the shared repository; Linux verification and scored Glimmer results must be recorded separately from the completed local preparation.

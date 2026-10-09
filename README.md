@@ -1,12 +1,12 @@
 # Living With Muse Glimmer
 
-One repository for preparing and recording a week of Muse Glimmer experiments. **Muse Glimmer and Hermes are already set up.** The current task is preparing four coding cases.
+One repository for preparing and recording a week of Muse Glimmer experiments. **Muse Glimmer and Hermes are already set up. Four coding cases are prepared and verified on this Mac.** Next, pull on the 5090, repeat preparation there, and validate the agent boundary before scoring.
 
 Private GitHub repository: [Yizheng-Sun/muse-glimmer-field-notes](https://github.com/Yizheng-Sun/muse-glimmer-field-notes).
 
 Edit this repository on the authoring computer, push to GitHub, and pull the same repository on the 5090 machine to run the experiments. Use repository-relative paths so both checkouts work without path changes.
 
-See [PLAN.md](PLAN.md) for the experiment scope and [the coding preparation checklist](cases/coding/README.md) for the next steps.
+See [PLAN.md](PLAN.md) for the experiment scope and [the coding cases](cases/coding/README.md) for the comparison table, local evidence and exact 5090 commands. Preparation uses one standard-library Python helper; no scored experiments have run.
 
 ## What belongs in Git
 

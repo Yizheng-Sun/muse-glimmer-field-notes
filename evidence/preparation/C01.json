@@ -1,0 +1,59 @@
+{
+  "case_id": "C01",
+  "verified_at": "20261009T161732.624889Z",
+  "experiment_commit": "e57a6964e0c9706f3b7b8f944f8575c3b395c45f",
+  "experiment_worktree_dirty": true,
+  "base_commit": "bb695aaecdef95832d167fc1d508921745aa824e",
+  "fixed_commit": "8c73ff134480f436faa0d041bd19aaf949aac22c",
+  "check_sha256": "bc6f33642d8776a8229851bb34f75f0204e93e11db464cdbb46300265013ac0a",
+  "prompt_sha256": "4c5685c88ebaeaffee8c81edc55755e1101d67ac281eed5847b371a96f35a579",
+  "helper_sha256": "f6a3fd04b5391a9b742d513ba424fe1f18c013cba5b90f7d692b3773ea2bb0ab",
+  "prepared_locally": true,
+  "preparation_elapsed_seconds": 0.362,
+  "capture_note": "Verified the new files in the worktree before their final commit. File SHA-256 hashes identify the exact check/prompt/helper that are committed alongside this evidence.",
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+    "executable": "<HOME>/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "platform": "macOS-26.7.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "git": "git version 2.50.1 (Apple Git-155)",
+    "dependencies": "none",
+    "source_cache": "warm cache; elapsed preparation time is not a first-download measurement"
+  },
+  "raw_report": ".runs/coding/C01/logs/20261009T161732.624889Z/verification.json",
+  "raw_report_sha256": "2c400ee9369b9e18162af57a09ebbc3c28a3c07d73179880269121bdde120338",
+  "setup_command": "python3 scripts/prepare_case.py C01 --verify",
+  "case_metadata_sha256": "9f29bc2a76430a0f88036813c69a5faf4ea60a0f89ba6114c97d17e627780605",
+  "base": {
+    "source": ".runs/coding/C01/base",
+    "command": "python3 -B -I cases/coding/C01/check.py --source .runs/coding/C01/base",
+    "exit_code": 1,
+    "elapsed_seconds": 0.062,
+    "assertion_failures": 21,
+    "summary": [
+      "Ran 6 tests in 0.006s",
+      "FAILED (failures=21)",
+      "RESULT: FAIL"
+    ],
+    "output_excerpt": "FAIL: test_empty_error_envvars_match_none (__main__.main.<locals>.EnvvarDisplayTests.test_empty_error_envvars_match_none) (envvar='')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<repo>/cases/coding/C01/check.py\", line 87, in test_empty_error_envvars_match_none\n    self.assertNotIn(\"env var:\", result.output)\nAssertionError: 'env var:' unexpectedly found in \"Usage: measure [OPTIONS]\\nTry 'measure --help' for help.\\n\\nError: Missing option '--measure' (env var: ''). Choose from:\\n\\tmetric,\\n\\timperial\\n\"\n",
+    "raw_log": ".runs/coding/C01/logs/20261009T161732.624889Z/base.log",
+    "raw_log_sha256": "a8c3346fa76ee129b7e66c21ce32b9d3d850bee427e19dd46e0ca3cf13d9ef17"
+  },
+  "fixed": {
+    "source": ".runs/coding/C01/fixed",
+    "command": "python3 -B -I cases/coding/C01/check.py --source .runs/coding/C01/fixed",
+    "exit_code": 0,
+    "elapsed_seconds": 0.061,
+    "assertion_failures": 0,
+    "summary": [
+      "Ran 6 tests in 0.005s",
+      "OK",
+      "RESULT: PASS"
+    ],
+    "output_excerpt": "test_empty_error_envvars_match_none (__main__.main.<locals>.EnvvarDisplayTests.test_empty_error_envvars_match_none) ... ok\ntest_empty_help_envvars_and_auto_prefix (__main__.main.<locals>.EnvvarDisplayTests.test_empty_help_envvars_and_auto_prefix) ... ok\ntest_environment_resolution_remains (__main__.main.<locals>.EnvvarDisplayTests.test_environment_resolution_remains) ... ok\ntest_nonempty_help_and_hidden_hint_controls (__main__.main.<locals>.EnvvarDisplayTests.test_nonempty_help_and_hidden_hint_controls) ... ok\ntest_sequences_in_missing_and_invalid_errors (__main__.main.<locals>.EnvvarDisplayTests.test_sequences_in_missing_and_invalid_errors) ... ok\ntest_string_error_display_remains (__main__.main.<locals>.EnvvarDisplayTests.test_string_error_display_remains) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.005s\n\nOK\nSOURCE: <repo>/.runs/coding/C01/fixed\nRESULT: PASS",
+    "raw_log": ".runs/coding/C01/logs/20261009T161732.624889Z/fixed.log",
+    "raw_log_sha256": "6ebdace9c86c66d2272035c1b60eb14414d6991f57b49bea1d9de88302f5e9ee"
+  },
+  "remote_5090_validation": "pending",
+  "scored_attempt": "not_run"
+}

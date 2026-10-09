@@ -1,0 +1,78 @@
+{
+  "id": "C01",
+  "title": "Readable environment-variable hints for empty and sequence configurations",
+  "category": "configuration edge case and CLI error rendering",
+  "status": "prepared_locally",
+  "repo_url": "https://github.com/pallets/click",
+  "issue_url": null,
+  "issue_reported_at": null,
+  "original_report": {
+    "kind": "pull_request",
+    "url": "https://github.com/pallets/click/pull/3884",
+    "reported_at": "2026-10-06T13:28:53Z",
+    "notes": "No separate issue is linked in the PR body; the PR itself reports the error/help symptoms."
+  },
+  "pr_url": "https://github.com/pallets/click/pull/3884",
+  "pr_created_at": "2026-10-06T13:28:53Z",
+  "pr_merged_at": "2026-10-06T20:59:00Z",
+  "base_commit": "bb695aaecdef95832d167fc1d508921745aa824e",
+  "fixed_commit": "8c73ff134480f436faa0d041bd19aaf949aac22c",
+  "commit_boundary": "Verified first parent of the merged fix, before its sole feature commit c53d3732b98c764932e146c007146ad402acb229.",
+  "changed_files": [
+    "CHANGES.md",
+    "src/click/core.py",
+    "tests/test_options.py"
+  ],
+  "meaningful_production_files": 1,
+  "selection_window": {
+    "from": "2026-09-25",
+    "through": "2026-10-09",
+    "expanded": false
+  },
+  "setup_commands": [
+    "python3 scripts/prepare_case.py C01 --verify",
+    "python3 scripts/prepare_case.py C01 --export"
+  ],
+  "check_commands": [
+    "python3 cases/coding/C01/check.py --source .runs/coding/C01/base",
+    "python3 cases/coding/C01/check.py --source .runs/coding/C01/fixed"
+  ],
+  "runtime_requirements": {
+    "source_python": ">=3.10",
+    "preparation_helper_python": ">=3.12",
+    "dependencies": [],
+    "setup_estimate_minutes": 5
+  },
+  "prompt_adapted": true,
+  "adaptation_notes": "Rephrased PR tables as observable requirements; replaced example names; removed implementation, source links, IDs and fixed SHA. Added same API controls and explicit tuple/empty-sequence coverage. Automatic prefix behavior follows the upstream added regression tests. No implementation choice is required.",
+  "upstream_solution_provenance": {
+    "author": "Kevin Deldycke",
+    "review": "Approved by Rowlando13",
+    "ai_disclosure_observed": false,
+    "inspected": [
+      "PR body",
+      "issue comments",
+      "review bodies",
+      "inline review comments",
+      "feature commit message"
+    ],
+    "notes": "No AI disclosure appears in inspected material. This is an upstream merged reference; human-only authorship was not independently established."
+  },
+  "local_validation": {
+    "python": "3.12.14",
+    "platform": "macOS 26.7.1 arm64",
+    "base_exit_code": 1,
+    "fixed_exit_code": 0,
+    "test_methods": 6,
+    "base_failing_subcases": 21,
+    "evidence": "evidence/preparation/C01.json",
+    "validated_on_5090": false
+  },
+  "remote_5090_validation": {
+    "status": "pending",
+    "notes": "Pull this repository, use Python3.12+, run preparation with --verify, record the exact experiment commit and machine environment; then validate the agent filesystem/network boundary before a scored run."
+  },
+  "scored_attempt": {
+    "status": "not_run"
+  }
+}

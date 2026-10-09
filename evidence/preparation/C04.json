@@ -1,0 +1,57 @@
+{
+  "case_id": "C04",
+  "verified_at": "20261009T161733.572969Z",
+  "experiment_commit": "e57a6964e0c9706f3b7b8f944f8575c3b395c45f",
+  "experiment_worktree_dirty": true,
+  "base_commit": "1f334c04c6918789974207733f194e11a47698f5",
+  "fixed_commit": "022ae6c6fe5c2ef9615875d0ecfab1ae4024720f",
+  "check_sha256": "9751125ae019ed3ca699a681e45c2666837b6b465c00086636298f86d71b83e7",
+  "prompt_sha256": "469a92ce8932155996bc4f38425d04eee7ad6750654eedeb8a8d27bb79dc7fb4",
+  "helper_sha256": "f6a3fd04b5391a9b742d513ba424fe1f18c013cba5b90f7d692b3773ea2bb0ab",
+  "prepared_locally": true,
+  "preparation_elapsed_seconds": 0.377,
+  "capture_note": "Verified the new files in the worktree before their final commit. File SHA-256 hashes identify the exact check/prompt/helper that are committed alongside this evidence.",
+  "environment": {
+    "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+    "executable": "<HOME>/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "platform": "macOS-26.7.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "git": "git version 2.50.1 (Apple Git-155)",
+    "dependencies": "none",
+    "source_cache": "warm cache; elapsed preparation time is not a first-download measurement"
+  },
+  "raw_report": ".runs/coding/C04/logs/20261009T161733.572969Z/verification.json",
+  "raw_report_sha256": "6b876c14f2025c66265ce6c16d9a60bfb72ee1b3be52492c6fe29ae894f3faf5",
+  "setup_command": "python3 scripts/prepare_case.py C04 --verify",
+  "case_metadata_sha256": "12d1b6404a5c8c9c39e755e4220f17f84aa2179c091156a5f1ee7d8c31bf4513",
+  "base": {
+    "source": ".runs/coding/C04/base",
+    "command": "python3 -B -I cases/coding/C04/check.py --source .runs/coding/C04/base",
+    "exit_code": 1,
+    "elapsed_seconds": 0.078,
+    "assertion_failures": 5,
+    "summary": [
+      "Ran 4 tests in 0.001s",
+      "FAILED (failures=5)"
+    ],
+    "output_excerpt": "FAIL: test_drive_relative_license_files_rejected (__main__.main.<locals>.LicenseFileChecks.test_drive_relative_license_files_rejected) (path='C:LICENSE')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"<repo>/cases/coding/C04/check.py\", line 48, in test_drive_relative_license_files_rejected\n    with self.assertRaises(InvalidMetadata) as caught:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: InvalidMetadata not raised\n",
+    "raw_log": ".runs/coding/C04/logs/20261009T161733.572969Z/base.log",
+    "raw_log_sha256": "22baf9bafc6bff6d9147ed783b81e5922b57a4c706b2aa024e4a50b71bb6fa74"
+  },
+  "fixed": {
+    "source": ".runs/coding/C04/fixed",
+    "command": "python3 -B -I cases/coding/C04/check.py --source .runs/coding/C04/fixed",
+    "exit_code": 0,
+    "elapsed_seconds": 0.063,
+    "assertion_failures": 0,
+    "summary": [
+      "Ran 4 tests in 0.000s",
+      "OK"
+    ],
+    "output_excerpt": "Python: 3.12.14\nSource: <repo>/.runs/coding/C04/fixed\nImported: <repo>/.runs/coding/C04/fixed/src/packaging/metadata.py\ntest_drive_relative_license_files_rejected (__main__.main.<locals>.LicenseFileChecks.test_drive_relative_license_files_rejected) ... ok\ntest_eager_validation_has_same_boundary (__main__.main.<locals>.LicenseFileChecks.test_eager_validation_has_same_boundary) ... ok\ntest_existing_invalid_paths_remain_invalid (__main__.main.<locals>.LicenseFileChecks.test_existing_invalid_paths_remain_invalid) ... ok\ntest_valid_relative_license_files_survive (__main__.main.<locals>.LicenseFileChecks.test_valid_relative_license_files_survive) ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK",
+    "raw_log": ".runs/coding/C04/logs/20261009T161733.572969Z/fixed.log",
+    "raw_log_sha256": "dc185a46d4758294f4d217cbec1bcd22b121c07c6537ee67903c119e46d6953a"
+  },
+  "remote_5090_validation": "pending",
+  "scored_attempt": "not_run"
+}
