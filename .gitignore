@@ -1,0 +1,17 @@
+# Editor and machine-specific setup
+.DS_Store
+.codex/
+.env
+.env.*
+!.env.example
+
+# Generated case sources, dependencies and raw evidence
+.runs/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+
+# Private daily inputs and outputs; commit only redacted examples elsewhere
+workspace/daily/

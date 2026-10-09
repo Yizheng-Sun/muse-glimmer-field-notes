@@ -1,0 +1,17 @@
+{
+  "id": "C01",
+  "title": "",
+  "category": "",
+  "status": "candidate",
+  "repo_url": "",
+  "issue_url": "",
+  "issue_reported_at": "",
+  "pr_url": "",
+  "pr_merged_at": "",
+  "base_commit": "",
+  "fixed_commit": "",
+  "setup_commands": [],
+  "check_commands": [],
+  "prompt_adapted": false,
+  "adaptation_notes": ""
+}
