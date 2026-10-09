@@ -8,6 +8,8 @@ Edit this repository on the authoring computer, push to GitHub, and pull the sam
 
 See [PLAN.md](PLAN.md) for the experiment scope and [the coding cases](cases/coding/README.md) for the comparison table, local evidence and exact 5090 commands. Preparation uses one standard-library Python helper; no scored experiments have run.
 
+See [IMPLEMENTATION.md](IMPLEMENTATION.md) for the implemented components, current repository structure and remaining work.
+
 ## What belongs in Git
 
 - Case metadata, sanitized prompts, verification instructions and review notes.
