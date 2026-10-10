@@ -1,0 +1,21 @@
+{
+  "cases": ["C01", "C02", "C03", "C04"],
+  "reasoning_efforts": ["low", "medium", "high", "xhigh"],
+  "budgets": [
+    {"name": "small", "max_turns": 15, "max_seconds": 300},
+    {"name": "medium", "max_turns": 30, "max_seconds": 600},
+    {"name": "large", "max_turns": 60, "max_seconds": 1200}
+  ],
+  "repeats": 1,
+  "shuffle_seed": 42,
+  "base_url": "http://127.0.0.1:8081/v1",
+  "model": "muse-glimmer",
+  "context_length": 131072,
+  "sampling": {"temperature": 1.0, "top_p": 0.95, "top_k": 64},
+  "api_key_env": "GLIMMER_API_KEY",
+  "hermes_command": ["hermes"],
+  "pytest_version": "9.0.2",
+  "flit_core_version": "3.12.0",
+  "upstream_checks": true,
+  "check_timeout_seconds": 120
+}

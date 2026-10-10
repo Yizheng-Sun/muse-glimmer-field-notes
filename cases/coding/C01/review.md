@@ -22,7 +22,7 @@ The feature commit names Kevin Deldycke as author/committer, and Rowlando13 appr
 - Direct check: `python3 cases/coding/C01/check.py --source .runs/coding/C01/base`, and the same command with `fixed`.
 - Actual result: the broken version exits **1**, with **21 failing subcases** across six test methods; the upstream-fixed version exits **0**, with all six methods passing. Setup/import errors use exit 2, distinct from the demonstrated behavior failure.
 - Selected results, environment, hashes, experiment commit and ignored raw-log paths: [preparation evidence](../../../evidence/preparation/C01.json).
-- 5090 setup time and verification: **pending**. No remote validation is claimed.
+- 5090 verification: the owner reported `base=1, fixed=0`, with report `.runs/coding/C01/logs/20261009T232712.390823Z/verification.json`. Complete remote environment details, setup duration and the raw preparation report have not been attached.
 
 The check imports `click` from the requested snapshot's `src` directory and verifies `click.__file__` lies there. It observes public `Option` behavior and `CliRunner` results: missing/invalid choices, string/list/tuple environment names, individually quoted names with spaces/commas, empty hints, automatic-prefix help, disabled hint display, and actual environment fallback resolution. It does not inspect the patch or require a specific implementation.
 
@@ -34,8 +34,12 @@ Relevant upstream tests are in `tests/test_options.py`, including `test_show_env
 
 The merged reference normalizes string/sequence error hints, omits empty explicit configurations, and lets empty configurations fall back to automatic environment names in help. Other implementations are acceptable if they meet the public behavior in the prompt and preserve parsing and resolution. The grader does not require a particular helper, loop or code shape.
 
-The check is focused rather than a proof that every Click feature works. It does not cover Windows console behavior, translation catalogs or every option type. The 5090 must rerun preparation and verify filesystem/network isolation before a scored attempt.
+The check is focused rather than a proof that every Click feature works. It does not cover Windows console behavior, translation catalogs or every option type. The owner chose Hermes' local backend for the 5090 attempts; filesystem and public-network isolation are not enforced. Retain this limitation with the results.
 
 ## Scored attempt
 
-**Not run.** Record the eventual run ID/date, experiment commit, runtime settings, enforced filesystem/network boundary, raw transcript/patch paths, post-patch verification, hints or human edits, verdict and failure cause. Do not describe this preparation result as a Glimmer coding result.
+**First autonomous attempt: FAIL.** Session `20261009_233133_8c1550`, Muse Glimmer with user-reported Hermes `v0.21.6+373.g46d7718`, on the 5090 local backend. The supplied session contains 60 actual tool calls over 218.56 seconds and no source edit. The owner's reviewer check reports six methods and 21 failing subcases. See the [first-attempt analysis](../../../evidence/coding/C01/attempt-01-analysis.md) and its derived summary for counts, raw-evidence hash and limitations. The experiment commit and complete frozen runtime settings remain unprovided.
+
+**Separate assisted continuation: FAIL, partial fix.** A supplied source diff and later acceptance check demonstrate an implementation with four failing subcases. Independent reconstruction of that diff fixes 18 original failures, retains three empty-configuration/automatic-prefix help failures, and introduces one help-formatting failure. The model declared completion after existing upstream tests passed, but the case-specific acceptance check still fails. The latest transcript tail reports an 18-second, three-API-call invocation; the complete assisted history and its total added budget remain unverified. See the [assisted-continuation analysis](../../../evidence/coding/C01/assisted-continuation-analysis.md).
+
+Keep these outcomes separate. Case-specific feedback or a human correction would be further assistance, rather than a revision of the original autonomous result.

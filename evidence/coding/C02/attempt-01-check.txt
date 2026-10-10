@@ -1,0 +1,15 @@
+Owner-supplied acceptance check output, received 2026-10-10.
+The process exit status was not included in the supplied text.
+
+test_abbreviations_and_sentence_boundaries (__main__.main.<locals>.ShortHelpTests.test_abbreviations_and_sentence_boundaries) ... ok
+test_explicit_short_help_and_empty_command_controls (__main__.main.<locals>.ShortHelpTests.test_explicit_short_help_and_empty_command_controls) ... ok
+test_first_paragraph_whitespace_and_no_rewrap_marker (__main__.main.<locals>.ShortHelpTests.test_first_paragraph_whitespace_and_no_rewrap_marker) ... ok
+test_group_help_uses_complete_summary (__main__.main.<locals>.ShortHelpTests.test_group_help_uses_complete_summary) ... ok
+test_word_aware_width_and_ellipsis (__main__.main.<locals>.ShortHelpTests.test_word_aware_width_and_ellipsis) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.001s
+
+OK
+SOURCE: /workspace/muse-glimmer-field-notes/.runs/coding/C02/attempt-20261010T184858Z/source
+RESULT: PASS

@@ -1,14 +1,20 @@
 # Living With Muse Glimmer
 
-One repository for preparing and recording a week of Muse Glimmer experiments. **Muse Glimmer and Hermes are already set up. Four coding cases are prepared and verified on this Mac.** Next, pull on the 5090, repeat preparation there, and validate the agent boundary before scoring.
+One repository for preparing and recording a week of Muse Glimmer experiments. **Muse Glimmer and Hermes are already set up. Four coding cases are prepared and verified on this Mac.** First autonomous results on the 5090: C01 failed acceptance; C02 passed. C03 and C04 remain to run.
 
 Private GitHub repository: [Yizheng-Sun/muse-glimmer-field-notes](https://github.com/Yizheng-Sun/muse-glimmer-field-notes).
 
 Edit this repository on the authoring computer, push to GitHub, and pull the same repository on the 5090 machine to run the experiments. Use repository-relative paths so both checkouts work without path changes.
 
-See [PLAN.md](PLAN.md) for the experiment scope and [the coding cases](cases/coding/README.md) for the comparison table, local evidence and exact 5090 commands. Preparation uses one standard-library Python helper; no scored experiments have run.
+See [PLAN.md](PLAN.md) for the experiment scope, [the coding cases](cases/coding/README.md) for preparation and exact 5090 commands, and [recorded results](results/coding-results.md) for autonomous outcomes and assisted continuations. Preparation uses one standard-library Python helper.
 
 See [IMPLEMENTATION.md](IMPLEMENTATION.md) for the implemented components, current repository structure and remaining work.
+
+[Automated coding evaluation](docs/EVALUATION.md) runs C01–C04 across budget and reasoning settings with fresh Hermes sessions, automatic acceptance checks, token/time/turn accounting and resumable CSV/Markdown reports. Configure [config/evaluation.json](config/evaluation.json) and launch [scripts/evaluate_coding.py](scripts/evaluate_coding.py) on the 5090. Its dry run makes no model calls:
+
+```sh
+python3 scripts/evaluate_coding.py --dry-run
+```
 
 ## What belongs in Git
 
@@ -42,6 +48,6 @@ Pull before each new editing session. Keep the two computers' edits sequential f
 
 The whole repository is available to you on both computers. Glimmer should see only the sanitized prompt and the pre-fix working source for its current case.
 
-Use filesystem isolation in the existing agent runtime to keep the experiment checkout, review notes, cached source Git history and reference checkouts outside the run. Working in a subdirectory does not itself restrict tools. Verify that the agent's tools cannot read the review files before describing an experiment as blind.
+The owner chose Hermes' local backend. Supply only the sanitized prompt and broken source, instruct the agent to stay in that source and avoid the network, and record that filesystem and network isolation are not enforced. Working in a subdirectory does not restrict tools; the recorded runs cannot be described as having an enforced blind boundary.
 
 Record each run's experiment-repository commit and upstream starting commit. That connects the result to the exact prompt, settings and source used.

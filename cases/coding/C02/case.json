@@ -74,6 +74,10 @@
     "notes": "Pull this repository, use Python3.12+, run preparation with --verify, record the exact experiment commit and machine environment; then validate the agent filesystem/network boundary before a scored run."
   },
   "scored_attempt": {
-    "status": "not_run"
+    "status": "recorded",
+    "first_autonomous_verdict": "PASS",
+    "session_id": "20261010_184903_fe2ff8",
+    "evidence": "evidence/coding/C02/attempt-01-summary.json",
+    "validation_note": "Acceptance passes; unchanged obsolete upstream fixture still fails and model exhausted its tool budget."
   }
 }

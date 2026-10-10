@@ -1,6 +1,6 @@
 # C02 — preparation and human review
 
-This is evaluator reference material. Keep this file, `case.json`, the check, fixed source, discovery notes and experiment Git history outside the coding agent's accessible filesystem. Give the agent only its sanitized prompt and clean broken source.
+This is evaluator reference material. Give the agent only its sanitized prompt and clean broken source. The owner chose Hermes' local backend for the recorded run; filesystem and network isolation were not enforced. Reviewer material was excluded from the supplied inputs, but remained accessible to local tools.
 
 ## Selection
 
@@ -22,7 +22,7 @@ The feature commit names Kevin Deldycke as author/committer, and Rowlando13 appr
 - Direct check: `python3 cases/coding/C02/check.py --source .runs/coding/C02/base`, and the same command with `fixed`.
 - Actual result: the broken version exits **1**, with **eight failing subcases** across five test methods; the upstream-fixed version exits **0**, with all five methods passing. Setup/import errors use exit 2, distinct from the demonstrated behavior failure.
 - Selected results, environment, hashes, experiment commit and ignored raw-log paths: [preparation evidence](../../../evidence/preparation/C02.json).
-- 5090 setup time and verification: **pending**. No remote validation is claimed.
+- 5090 preparation report and setup duration: **not supplied**. Separately, the owner supplied a passing acceptance result for the actual C02 attempt source; see the scored attempt below.
 
 The check imports `click` from the requested snapshot's `src` directory and verifies `click.__file__` lies there. It uses public command summaries and group help, rather than calling a private helper or inspecting an implementation. Controls cover ordinary first sentences, digits/uppercase/lowercase following periods, embedded dots, whitespace, paragraph boundaries, no-rewrap markers, word-aware truncation, hyphenated/long words, widths below the ellipsis length, explicitly supplied summaries and empty help.
 
@@ -34,8 +34,16 @@ Relevant upstream regression coverage is `tests/test_utils/test_make_default_sho
 
 The merged reference identifies sentence boundaries using the next word's first character, preserves the first paragraph and whitespace normalization, and uses a standard-library shortening routine with hyphen splitting disabled. None of those implementation choices is required by the grader: a correct manual scanner/word-shortening implementation is equally acceptable if it produces the specified public behavior.
 
-The sentence rule is deliberately a small predictable heuristic, not complete linguistic abbreviation detection. The focused check does not establish all Click formatting behavior or translation behavior. The 5090 must rerun preparation and verify filesystem/network isolation before a scored attempt.
+The sentence rule is deliberately a small predictable heuristic, not complete linguistic abbreviation detection. The focused check does not establish all Click formatting behavior or translation behavior. Record preparation evidence and the actual filesystem/network boundary for each run.
 
 ## Scored attempt
 
-**Not run.** Record the eventual run ID/date, experiment commit, runtime settings, enforced filesystem/network boundary, raw transcript/patch paths, post-patch verification, hints or human edits, verdict and failure cause. Do not describe this preparation result as a Glimmer coding result.
+**First autonomous result: PASS.** Session `20261010_184903_fe2ff8` ran on 10 October 2026 for **331.834 seconds** with **60 actual tool calls**. There was one successful source patch, on call 17, to `src/click/utils.py`; no tests were edited and no human hint is recorded after the initial prompt.
+
+The owner-supplied check reports **all five acceptance methods passing** on `.runs/coding/C02/attempt-20261010T184858Z/source` on the 5090. A reviewer independently reconstructed only the recorded patch on the verified pinned baseline: the unchanged check also passes all five methods on macOS / Python 3.12.14, exit 0. The original final 5090 source artifact and checker process exit status were not attached.
+
+The run exhausted its iteration budget after the working fix. Three focused pytest invocations stopped on an unchanged old expectation: `123 567 9.` for `123 567 9. aaaa bbb` at width 10. Under the requested lowercase-following-word rule, the correct new output is `123 567...`. This fixture needs updating; its failure does not negate C02 acceptance. No complete focused-file or full-suite pass is recorded, and Glimmer added no regression tests.
+
+The local backend allowed scratch writes under `/tmp` and Git inspection of the enclosing experiment repository. No reference fix or grader-content read is observed in the trace. Complete frozen runtime records and the Linux before/after preparation report remain unavailable.
+
+See the [attempt analysis](../../../evidence/coding/C02/attempt-01-analysis.md), [structured summary](../../../evidence/coding/C02/attempt-01-summary.json), and [owner-supplied acceptance output](../../../evidence/coding/C02/attempt-01-check.txt) for counts, provenance, hashes and limitations. Preserve this original result separately from any later test-maintenance continuation.

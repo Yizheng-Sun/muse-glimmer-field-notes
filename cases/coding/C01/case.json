@@ -73,6 +73,11 @@
     "notes": "Pull this repository, use Python3.12+, run preparation with --verify, record the exact experiment commit and machine environment; then validate the agent filesystem/network boundary before a scored run."
   },
   "scored_attempt": {
-    "status": "not_run"
+    "status": "recorded",
+    "first_autonomous_verdict": "FAIL",
+    "session_id": "20261009_233133_8c1550",
+    "evidence": "evidence/coding/C01/attempt-01-summary.json",
+    "assisted_continuation_verdict": "FAIL",
+    "assisted_continuation_evidence": "evidence/coding/C01/assisted-continuation-analysis.md"
   }
 }

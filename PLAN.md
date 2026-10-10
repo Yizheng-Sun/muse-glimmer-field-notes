@@ -8,6 +8,8 @@ Current status: **Muse Glimmer and Hermes are fully set up. C01–C04 are prepar
 
 Private repository: [Yizheng-Sun/muse-glimmer-field-notes](https://github.com/Yizheng-Sun/muse-glimmer-field-notes).
 
+**10 October scope update:** the owner requested automated evaluation of all four coding cases across budgets and `low`, `medium`, `high`, `xhigh` reasoning. The [evaluation configuration](config/evaluation.json) defaults to 48 fresh sequential runs with 15/30/60 tool-calling iterations and 5/10/20-minute limits. This extends the original single-attempt protocol below. Keep the original C01/C02 results separate; use the [runner guide](docs/EVALUATION.md) for the new comparison. The wrapper and reporting script use the standard library and the existing Hermes agent.
+
 ## 1. Goal and scope
 
 Build a small, repeatable experiment that answers: **Would I reach for this local assistant first, and where would I still take over?** Use the attached experiment outline as the scope. Budget roughly **28–32 hours across seven calendar days**, including preparation, observation and assembling the evidence.
