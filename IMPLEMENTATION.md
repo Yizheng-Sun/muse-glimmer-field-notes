@@ -71,11 +71,13 @@ The exported local inputs were inspected to match the broken source and sanitize
 
 [scripts/evaluate_coding.py](scripts/evaluate_coding.py) wraps the installed Hermes CLI; [scripts/eval_metrics.py](scripts/eval_metrics.py) extracts native usage and writes JSONL, CSV and Markdown reports. Both use the standard library. [config/evaluation.json](config/evaluation.json) specifies cases, reasoning strengths, budgets, repeats, endpoint, context and sampling. The default is 48 sequential runs: four cases, three budgets and four reasoning levels, with one repeat.
 
+[scripts/run_evaluation.sh](scripts/run_evaluation.sh) launches that matrix in the background with one command. It discovers Python 3.12+, validates the matrix, reads the server key privately when needed, recreates `.runs/`, preserves timestamped launch logs and guards against duplicate launcher starts. Existing runner options, including `--resume`, pass through; inspection commands stay in the foreground.
+
 Each attempt uses a fresh pinned source, virtual environment, synthetic one-commit Git baseline, Hermes home and session database. Dependencies are downloaded once per batch and installed offline into each source. Model iterations and elapsed time are capped; the unchanged acceptance checker grades the final or partial source. Functional verdicts, process stops, focused upstream results and missing metrics remain separate.
 
 The requested llama.cpp reasoning strength is supplied through a named Hermes provider's `extra_body.chat_template_kwargs.reasoning_strength`. Main and auxiliary token counters are recorded separately, including cache buckets. Compression child sessions use additive database usage and occurrence identifiers for accounting. Completed attempts are preserved on resume; abandoned directories are archived before infrastructure retries.
 
-Local tests cover matrix orchestration, timeout cleanup, acceptance versus process status, fresh sources, interruption, resume, reporting, native token accounting and compression lineage. Real offline dependency installation, editable installation and focused test collection have also passed for Click and Packaging. Real Hermes/Glimmer matrix execution remains to be verified on the 5090. The backend is local and does not enforce filesystem or network isolation. See [the evaluation guide](docs/EVALUATION.md) for launch commands and limits.
+Local tests cover matrix orchestration, timeout cleanup, acceptance versus process status, fresh sources, interruption, resume, reporting, native token accounting and compression lineage. Launcher checks cover detached startup, a hidden credential prompt, no-auth input, frozen resume credentials, stale Python fallback, log preservation and duplicate prevention. Real offline dependency installation, editable installation and focused test collection have also passed for Click and Packaging. Real Hermes/Glimmer matrix execution remains to be verified on the 5090. The backend is local and does not enforce filesystem or network isolation. See [the evaluation guide](docs/EVALUATION.md) for launch commands and limits.
 
 ## Current repository structure
 
@@ -105,6 +107,7 @@ muse-glimmer-field-notes/
 ├── scripts/
 │   ├── prepare_case.py                # Pinned source preparation
 │   ├── evaluate_coding.py             # Sequential Hermes matrix runner
+│   ├── run_evaluation.sh              # One-command background launcher
 │   └── eval_metrics.py                # Usage extraction and reports
 ├── config/
 │   └── evaluation.json                # Matrix and local endpoint settings
@@ -112,6 +115,7 @@ muse-glimmer-field-notes/
 │   └── EVALUATION.md                  # Setup, overnight launch and metrics
 ├── tests/
 │   ├── test_evaluate_coding.py         # Fake-Hermes orchestration checks
+│   ├── test_run_evaluation.py          # Bash launch, auth, logs and duplicate checks
 │   └── test_eval_metrics.py            # Native exports, accounting and reports
 ├── results/
 │   ├── candidates.csv                 # 14 inspected candidates and decisions

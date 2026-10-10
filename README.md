@@ -10,10 +10,16 @@ See [PLAN.md](PLAN.md) for the experiment scope, [the coding cases](cases/coding
 
 See [IMPLEMENTATION.md](IMPLEMENTATION.md) for the implemented components, current repository structure and remaining work.
 
-[Automated coding evaluation](docs/EVALUATION.md) runs C01–C04 across budget and reasoning settings with fresh Hermes sessions, automatic acceptance checks, token/time/turn accounting and resumable CSV/Markdown reports. Configure [config/evaluation.json](config/evaluation.json) and launch [scripts/evaluate_coding.py](scripts/evaluate_coding.py) on the 5090. Its dry run makes no model calls:
+[Automated coding evaluation](docs/EVALUATION.md) runs C01–C04 across budget and reasoning settings with fresh Hermes sessions, automatic acceptance checks, token/time/turn accounting and resumable CSV/Markdown reports. With Muse Glimmer already running on the 5090, launch the default 48-run matrix in the background with:
+
+```bash
+git pull --ff-only && bash scripts/run_evaluation.sh
+```
+
+The launcher finds Python 3.12+, asks privately for the server key if it is not in the environment, recreates `.runs/`, and prints the log path. Press Enter at the key prompt only if server authentication is disabled. Configure [config/evaluation.json](config/evaluation.json) to change the matrix or endpoint. Preview the matrix without model calls or a key prompt:
 
 ```sh
-python3 scripts/evaluate_coding.py --dry-run
+bash scripts/run_evaluation.sh --dry-run
 ```
 
 ## What belongs in Git

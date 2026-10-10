@@ -78,24 +78,33 @@ EVAL_BATCH=/workspace/muse-glimmer-field-notes/.runs/evaluation/REPLACE_WITH_PRI
 "$CASE_PYTHON" -u scripts/evaluate_coding.py --resume "$EVAL_BATCH"
 ```
 
-For an unattended launch directly from the default configuration, use this command instead of a foreground full run:
+For an unattended launch directly from the default configuration, run this single line from the repository on the 5090:
 
 ```bash
-mkdir -p .runs
-nohup "$CASE_PYTHON" -u scripts/evaluate_coding.py \
-  > .runs/evaluation-launch.log 2>&1 < /dev/null &
-EVALUATION_PID=$!
-printf '%s\n' "$EVALUATION_PID" > .runs/evaluation-launch.pid
-tail -n 20 .runs/evaluation-launch.log
+git pull --ff-only && bash scripts/run_evaluation.sh
 ```
 
-To launch a prepared or interrupted batch in the background, add `--resume "$EVAL_BATCH"` immediately after `scripts/evaluate_coding.py` in that command. The launch log stays outside the timestamped batch. It records the batch path and progress; each attempt also has its own transcript. Monitor with:
+[scripts/run_evaluation.sh](../scripts/run_evaluation.sh) resolves the checkout from its own location and finds Python 3.12+ automatically, preferring a usable `CASE_PYTHON`. A stale interpreter path from a deleted `.runs/` directory falls back to an installed Python. It checks the interpreter's `venv`/`pip` imports and validates the matrix before detaching the runner. The runner then checks Hermes and the server; inspect the log for setup failures.
+
+The launcher uses the configured key environment variable, then `GLIMMER_API_KEY` or `glimmerapikey` if already set. Otherwise it prompts once without displaying the key; press Enter only for a server without authentication. For a launch without a terminal, export the key first, or explicitly set `GLIMMER_API_KEY=local-no-auth` for a server without authentication. Credentials are passed through the environment. Resume reads the key-variable name from the batch's frozen configuration.
+
+The launcher recreates `.runs/`, preserves previous launch logs, writes `.runs/evaluation-launch.pid`, and refuses to start while that recorded process is alive. Once it prints the background PID, you can disconnect from SSH. `.runs/evaluation-launch.log` links to the newest timestamped launch log; it records the batch path and progress, and each attempt has its own transcript. Monitor with:
 
 ```bash
 tail -f .runs/evaluation-launch.log
 ```
 
-Only one supervisor should run against the GPU at a time. The batch lock prevents two supervisors from rewriting the same batch; separate batches have separate locks.
+To launch a prepared or interrupted batch in the background, pass the existing runner's options:
+
+```bash
+bash scripts/run_evaluation.sh --resume "$EVAL_BATCH"
+```
+
+Other options are forwarded unchanged, for example `bash scripts/run_evaluation.sh --cases C02 --efforts low --budgets small`. `--dry-run` and `--help` stay in the foreground and never prompt for a key. The launcher uses `config/evaluation.json` by default; with the checked-in configuration it runs all four cases, four efforts and three budgets once.
+
+Only one supervisor should run against the GPU at a time. The launcher's PID guard covers starts through this checkout's Bash script. Direct Python launches bypass it; the Python batch lock prevents two supervisors from rewriting the same batch. If a launcher is killed before it releases its short startup lock, verify that it has stopped before removing `.runs/.evaluation-launch-lock` and retrying.
+
+A recycled PID or an unreaped container process can also leave a stale `.runs/evaluation-launch.pid` that blocks a restart. Remove that PID file only after confirming the previous evaluation has stopped.
 
 ## Resume and preserve results
 
