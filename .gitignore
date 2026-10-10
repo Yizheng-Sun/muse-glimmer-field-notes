@@ -15,3 +15,4 @@ node_modules/
 
 # Private daily inputs and outputs; commit only redacted examples elsewhere
 workspace/daily/
+muse-glimmer/*

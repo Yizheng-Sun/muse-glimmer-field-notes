@@ -1,0 +1,26 @@
+0.00.140.512 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.248.343 I srv    load_model: loading model '/workspace/muse-glimmer-field-notes/./muse-glimmer/Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf'
+0.01.158.548 W load: setting token '<|message|>' (200023) attribute to USER_DEFINED (16), old attributes: 8
+0.01.158.556 W load: setting token '<|start|>' (200022) attribute to USER_DEFINED (16), old attributes: 8
+0.01.162.490 W load: special_eot_id is not in special_eog_ids - the tokenizer config may be incorrect
+0.03.796.679 I srv    load_model: loaded multimodal model, '/workspace/muse-glimmer-field-notes/./muse-glimmer/mmproj-Muse-Glimmer-30B-Q4_K_M.gguf'
+0.03.816.807 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 131072, kv_unified = 'false'
+0.03.821.113 I srv          init: chat template supports preserving reasoning, consider enabling it via --reasoning-preserve
+0.03.821.158 I srv  llama_server: model loaded
+0.03.821.163 I srv  llama_server: listening on http://127.0.0.1:8081
+7.26.047.811 W srv    operator(): unauthorized: Invalid API Key
+7.26.049.854 W srv    operator(): unauthorized: Invalid API Key
+7.26.050.684 W srv    operator(): unauthorized: Invalid API Key
+7.26.052.415 W srv    operator(): unauthorized: Invalid API Key
+7.26.053.953 W srv    operator(): unauthorized: Invalid API Key
+7.26.068.069 W srv    operator(): unauthorized: Invalid API Key
+7.26.074.119 W srv    operator(): unauthorized: Invalid API Key
+7.42.244.118 W srv    operator(): unauthorized: Invalid API Key
+7.42.245.397 W srv    operator(): unauthorized: Invalid API Key
+7.42.246.167 W srv    operator(): unauthorized: Invalid API Key
+7.42.246.862 W srv    operator(): unauthorized: Invalid API Key
+7.42.247.527 W srv    operator(): unauthorized: Invalid API Key
+7.42.424.454 W srv    operator(): unauthorized: Invalid API Key
+7.42.430.016 W srv    operator(): unauthorized: Invalid API Key
+10.45.575.968 W srv    operator(): unauthorized: Invalid API Key
+20.33.700.341 I srv    operator(): operator(): cleaning up before exit...

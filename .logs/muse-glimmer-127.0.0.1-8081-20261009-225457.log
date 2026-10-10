@@ -1,0 +1,41 @@
+0.00.145.532 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.248.225 I srv    load_model: loading model '/workspace/muse-glimmer-field-notes/muse-glimmer/Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf'
+0.01.144.751 W load: setting token '<|message|>' (200023) attribute to USER_DEFINED (16), old attributes: 8
+0.01.144.762 W load: setting token '<|start|>' (200022) attribute to USER_DEFINED (16), old attributes: 8
+0.01.148.270 W load: special_eot_id is not in special_eog_ids - the tokenizer config may be incorrect
+0.03.726.725 I srv    load_model: loaded multimodal model, '/workspace/muse-glimmer-field-notes/muse-glimmer/mmproj-Muse-Glimmer-30B-Q4_K_M.gguf'
+0.03.747.258 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 131072, kv_unified = 'false'
+0.03.751.853 I srv          init: chat template supports preserving reasoning, consider enabling it via --reasoning-preserve
+0.03.751.908 I srv  llama_server: model loaded
+0.03.751.915 I srv  llama_server: listening on http://127.0.0.1:8081
+3.09.240.482 W srv    operator(): unauthorized: Invalid API Key
+3.09.242.276 W srv    operator(): unauthorized: Invalid API Key
+3.09.243.090 W srv    operator(): unauthorized: Invalid API Key
+3.09.244.634 W srv    operator(): unauthorized: Invalid API Key
+3.09.245.285 W srv    operator(): unauthorized: Invalid API Key
+3.09.259.694 W srv    operator(): unauthorized: Invalid API Key
+3.09.265.836 W srv    operator(): unauthorized: Invalid API Key
+3.19.860.859 W srv    operator(): unauthorized: Invalid API Key
+3.19.861.998 W srv    operator(): unauthorized: Invalid API Key
+3.19.862.848 W srv    operator(): unauthorized: Invalid API Key
+3.19.863.609 W srv    operator(): unauthorized: Invalid API Key
+3.19.864.319 W srv    operator(): unauthorized: Invalid API Key
+3.20.005.460 W srv    operator(): unauthorized: Invalid API Key
+3.20.011.043 W srv    operator(): unauthorized: Invalid API Key
+3.35.415.363 W srv    operator(): unauthorized: Invalid API Key
+6.47.403.636 W srv    operator(): unauthorized: Invalid API Key
+6.47.405.563 W srv    operator(): unauthorized: Invalid API Key
+6.47.406.355 W srv    operator(): unauthorized: Invalid API Key
+6.47.407.959 W srv    operator(): unauthorized: Invalid API Key
+6.47.408.754 W srv    operator(): unauthorized: Invalid API Key
+6.47.424.836 W srv    operator(): unauthorized: Invalid API Key
+6.47.430.995 W srv    operator(): unauthorized: Invalid API Key
+6.56.004.443 W srv    operator(): unauthorized: Invalid API Key
+6.56.005.498 W srv    operator(): unauthorized: Invalid API Key
+6.56.006.377 W srv    operator(): unauthorized: Invalid API Key
+6.56.007.035 W srv    operator(): unauthorized: Invalid API Key
+6.56.007.781 W srv    operator(): unauthorized: Invalid API Key
+6.56.144.424 W srv    operator(): unauthorized: Invalid API Key
+6.56.149.903 W srv    operator(): unauthorized: Invalid API Key
+7.00.288.617 W srv    operator(): unauthorized: Invalid API Key
+11.00.862.690 I srv    operator(): operator(): cleaning up before exit...
