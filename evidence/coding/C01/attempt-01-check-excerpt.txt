@@ -1,0 +1,33 @@
+Owner-supplied output tail from the 5090, received 2026-10-10.
+This is the supplied excerpt, not a complete check log. The process exit status was not supplied.
+
+======================================================================
+FAIL: test_sequences_in_missing_and_invalid_errors (__main__.main.<locals>.EnvvarDisplayTests.test_sequences_in_missing_and_invalid_errors) (container='tuple', variables=['GLIMMER_CASE_MEASURE_A', 'GLIMMER_CASE_MEASURE_B'], args=('--measure', 'nonsense'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/muse-glimmer-field-notes/cases/coding/C01/check.py", line 72, in test_sequences_in_missing_and_invalid_errors
+    self.assertIn(f"(env var: {hint})", result.output)
+AssertionError: "(env var: 'GLIMMER_CASE_MEASURE_A', 'GLIMMER_CASE_MEASURE_B')" not found in "Usage: measure [OPTIONS]\nTry 'measure --help' for help.\n\nError: Invalid value for '--measure' (env var: '('GLIMMER_CASE_MEASURE_A', 'GLIMMER_CASE_MEASURE_B')'): 'nonsense' is not one of 'metric', 'imperial'.\n"
+
+======================================================================
+FAIL: test_sequences_in_missing_and_invalid_errors (__main__.main.<locals>.EnvvarDisplayTests.test_sequences_in_missing_and_invalid_errors) (container='tuple', variables=['GLIMMER CASE', 'GLIMMER,CASE'], args=())
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/muse-glimmer-field-notes/cases/coding/C01/check.py", line 72, in test_sequences_in_missing_and_invalid_errors
+    self.assertIn(f"(env var: {hint})", result.output)
+AssertionError: "(env var: 'GLIMMER CASE', 'GLIMMER,CASE')" not found in "Usage: measure [OPTIONS]\nTry 'measure --help' for help.\n\nError: Missing option '--measure' (env var: '('GLIMMER CASE', 'GLIMMER,CASE')'). Choose from:\n\tmetric,\n\timperial\n"
+
+======================================================================
+FAIL: test_sequences_in_missing_and_invalid_errors (__main__.main.<locals>.EnvvarDisplayTests.test_sequences_in_missing_and_invalid_errors) (container='tuple', variables=['GLIMMER CASE', 'GLIMMER,CASE'], args=('--measure', 'nonsense'))
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/muse-glimmer-field-notes/cases/coding/C01/check.py", line 72, in test_sequences_in_missing_and_invalid_errors
+    self.assertIn(f"(env var: {hint})", result.output)
+AssertionError: "(env var: 'GLIMMER CASE', 'GLIMMER,CASE')" not found in "Usage: measure [OPTIONS]\nTry 'measure --help' for help.\n\nError: Invalid value for '--measure' (env var: '('GLIMMER CASE', 'GLIMMER,CASE')'): 'nonsense' is not one of 'metric', 'imperial'.\n"
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.015s
+
+FAILED (failures=21)
+SOURCE: /workspace/muse-glimmer-field-notes/.runs/coding/C01/agent/source
+RESULT: FAIL
