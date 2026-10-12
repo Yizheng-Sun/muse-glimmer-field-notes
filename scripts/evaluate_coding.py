@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Run a sequential Hermes budget/reasoning matrix. Standard library only."""
+"""Run a sequential Hermes matrix using local Glimmer or the Claude API."""
 from __future__ import annotations
 
 import argparse
+import ast
 from datetime import datetime, timezone
 import difflib
 import hashlib
@@ -56,8 +57,7 @@ def git(*args):
     return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
 
 
-def load_config(path):
-    config = json.loads(path.read_text())
+def validate_config(config):
     if not config.get("cases") or any(c not in TARGETS for c in config["cases"]):
         raise ValueError("cases must select C01–C04")
     if not config.get("reasoning_efforts") or any(e not in EFFORTS for e in config["reasoning_efforts"]):
@@ -77,11 +77,24 @@ def load_config(path):
         raise ValueError("repeats must be a positive integer")
     if len(set(config["cases"])) != len(config["cases"]) or len(set(config["reasoning_efforts"])) != len(config["reasoning_efforts"]):
         raise ValueError("Duplicate cases/efforts would silently repeat jobs")
+    provider = config.get("provider", "glimmer")
+    if provider not in {"glimmer", "anthropic"}:
+        raise ValueError("provider must be glimmer or anthropic")
     endpoint = urlparse(config["base_url"])
-    if endpoint.scheme != "http" or endpoint.hostname not in {"localhost", "127.0.0.1", "::1"} or endpoint.username or endpoint.password:
-        raise ValueError("Use the local model's loopback HTTP /v1 URL; credentials belong in the API-key environment variable")
-    if endpoint.path.rstrip("/") != "/v1" or endpoint.query or endpoint.fragment:
-        raise ValueError("base_url must end in /v1")
+    if provider == "anthropic":
+        if config["base_url"] != "https://api.anthropic.com":
+            raise ValueError("Anthropic evaluation requires https://api.anthropic.com")
+        if config["model"] != "claude-haiku-5-5" or config["api_key_env"] != "ANTHROPIC_API_KEY":
+            raise ValueError("Use claude-haiku-5-5 and ANTHROPIC_API_KEY for the Haiku comparison")
+        if not re.fullmatch(r"[0-9]+(?:\.[0-9]+)+", config.get("anthropic_sdk_version", "")):
+            raise ValueError("Pin anthropic_sdk_version to a numeric release")
+        if not re.fullmatch(r"[0-9]+(?:\.[0-9]+)+", config.get("docstring_parser_version", "")):
+            raise ValueError("Pin docstring_parser_version to a numeric release")
+    else:
+        if endpoint.scheme != "http" or endpoint.hostname not in {"localhost", "127.0.0.1", "::1"} or endpoint.username or endpoint.password:
+            raise ValueError("Use the local model's loopback HTTP /v1 URL; credentials belong in the API-key environment variable")
+        if endpoint.path.rstrip("/") != "/v1" or endpoint.query or endpoint.fragment:
+            raise ValueError("base_url must end in /v1")
     if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", config["api_key_env"]):
         raise ValueError("Invalid api_key_env name")
     if not isinstance(config["hermes_command"], list) or not config["hermes_command"] or any(not isinstance(x, str) for x in config["hermes_command"]):
@@ -94,9 +107,15 @@ def load_config(path):
     if type(config.get("context_length")) is not int or not 1024 <= config["context_length"] <= 131072:
         raise ValueError("context_length must match the server slot, between 1024 and 131072")
     sampling = config.get("sampling", {})
-    if set(sampling) != {"temperature", "top_p", "top_k"} or any(type(sampling[k]) not in (int, float) or not math.isfinite(sampling[k]) for k in ("temperature", "top_p")) or not 0 <= sampling["temperature"] <= 2 or not 0 < sampling["top_p"] <= 1 or type(sampling["top_k"]) is not int or sampling["top_k"] < 1:
+    if provider == "anthropic" and sampling:
+        raise ValueError("Haiku adaptive thinking requires sampling to be empty")
+    if provider == "glimmer" and (set(sampling) != {"temperature", "top_p", "top_k"} or any(type(sampling[k]) not in (int, float) or not math.isfinite(sampling[k]) for k in ("temperature", "top_p")) or not 0 <= sampling["temperature"] <= 2 or not 0 < sampling["top_p"] <= 1 or type(sampling["top_k"]) is not int or sampling["top_k"] < 1):
         raise ValueError("Provide sampling temperature (0–2), top_p (0–1), and positive integer top_k")
     return config
+
+
+def load_config(path):
+    return validate_config(json.loads(path.read_text()))
 
 
 def make_jobs(config):
@@ -147,23 +166,31 @@ def require_logged(argv, cwd, log, timeout=300, env=None):
 
 def hermes_config(config, source, effort):
     """JSON is valid YAML; no PyYAML dependency in this wrapper."""
-    provider = "glimmer-eval"
+    provider = "anthropic" if config.get("provider") == "anthropic" else "glimmer-eval"
     url = config["base_url"].rstrip("/")
     extra = {"chat_template_kwargs": {"reasoning_strength": effort},
              "parallel_tool_calls": False, **config["sampling"]}
     auxiliary = {"provider": provider, "model": config["model"], "timeout": 300, "extra_body": extra}
-    return {
+    result = {
         "model": {"default": config["model"], "provider": provider, "base_url": url, "context_length": config["context_length"]},
         "providers": {provider: {"api": url, "key_env": config["api_key_env"],
                                  "default_model": config["model"], "transport": "chat_completions", "extra_body": extra}},
         "terminal": {"backend": "local", "cwd": str(source)},
         "agent": {"reasoning_effort": effort},
         "memory": {"memory_enabled": False, "user_profile_enabled": False, "provider": ""},
-        "auxiliary": {"compression": auxiliary, "approval": auxiliary,
+        "auxiliary": {"compression": dict(auxiliary), "approval": dict(auxiliary),
                       "title_generation": {"enabled": False, "model_upgrade_enabled": False},
                       "background_review": {"enabled": False}},
         "fallback_providers": [], "mcp_servers": {},
     }
+    if provider == "anthropic":
+        result.pop("providers")
+        for task in ("compression", "approval"):
+            result["auxiliary"][task].pop("extra_body")
+            result["auxiliary"][task]["reasoning_effort"] = effort
+        # Native Messages API: Hermes' adapter supplies adaptive thinking and
+        # output_config.effort. Glimmer's sampling/template fields do not apply.
+    return result
 
 
 def agent_env(config, home, source):
@@ -172,6 +199,11 @@ def agent_env(config, home, source):
     for key in list(env):
         if key.startswith(("HERMES_", "TERMINAL_")) or key in {"OPENAI_BASE_URL", "OPENAI_API_BASE", "OPENAI_API_KEY", "PYTHONPATH"}:
             env.pop(key)
+    if config.get("provider") == "anthropic":
+        for key in ("ANTHROPIC_TOKEN", "CLAUDE_CODE_OAUTH_TOKEN", "ANTHROPIC_AUTH_TOKEN", "CLAUDE_CONFIG_DIR", "ANTHROPIC_BASE_URL"):
+            env.pop(key, None)
+        if not os.environ.get(config["api_key_env"], "").strip():
+            raise ValueError("Set ANTHROPIC_API_KEY before an API evaluation")
     env.update({"HERMES_HOME": str(home), "TERMINAL_CWD": str(source),
                 "TERMINAL_BACKEND": "local", "HERMES_IGNORE_RULES": "1",
                 "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
@@ -180,43 +212,128 @@ def agent_env(config, home, source):
                 "NO_PROXY": "localhost,127.0.0.1,::1", "no_proxy": "localhost,127.0.0.1,::1"})
     # A no-auth local server still needs a nonempty SDK key; never record its value.
     env[config["api_key_env"]] = os.environ.get(config["api_key_env"], "local-no-auth")
+    if config.get("_runtime_proof"):
+        env["HERMES_EVAL_RUNTIME_PROOF"] = config["_runtime_proof"]
+    if config.get("_sdk_dir"):
+        env["HERMES_EVAL_SDK_DIR"] = config["_sdk_dir"]
     return env
 
 
+def evaluation_hermes_command(config):
+    return config.get("_runtime_command", config["hermes_command"])
+
+
+def resolve_haiku_runtime(config):
+    """Use Hermes' own isolated interpreter, without changing its installation."""
+    raw = subprocess.check_output(config["hermes_command"] + ["--print-runtime-command"],
+                                  cwd=ROOT, text=True, timeout=30)
+    command = json.loads(raw)
+    if not isinstance(command, list) or len(command) < 4 or command[1:3] != ["-I", "-c"]:
+        raise RuntimeError("Hermes must support --print-runtime-command with an isolated Python runtime")
+    tree = ast.parse(command[3])
+    roots = []
+    for node in ast.walk(tree):
+        if (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+                and isinstance(node.func.value, ast.Attribute)
+                and isinstance(node.func.value.value, ast.Name)
+                and node.func.value.value.id == "sys" and node.func.value.attr == "path"
+                and node.func.attr == "insert" and len(node.args) == 2
+                and isinstance(node.args[1], ast.Constant) and isinstance(node.args[1].value, str)):
+            roots.append(Path(node.args[1].value))
+    if len(roots) != 1 or not (roots[0] / "hermes_cli/main.py").is_file():
+        raise RuntimeError("Cannot identify the installed Hermes source root; inspect --print-runtime-command")
+    if not Path(command[0]).is_file():
+        raise RuntimeError("Hermes' isolated Python interpreter is missing")
+    return [command[0], "-I", str(ROOT / "scripts/hermes_haiku.py"), "--hermes-root", str(roots[0])]
+
+
+def ensure_haiku_sdk(config, batch):
+    """Install the pure-Python API client in this batch, preserving Hermes."""
+    target = batch / "hermes-sdk"
+    manifest = batch / "hermes-sdk-hashes.json"
+    if manifest.exists():
+        if files(target) != json.loads(manifest.read_text()):
+            raise RuntimeError("Frozen Anthropic SDK changed; start a new batch")
+    else:
+        if target.exists():
+            shutil.rmtree(target)
+        require_logged([sys.executable, "-m", "pip", "install", "--only-binary=:all:", "--no-deps",
+                        "--target", str(target), f"anthropic=={config['anthropic_sdk_version']}",
+                        f"docstring-parser=={config['docstring_parser_version']}"],
+                       ROOT, batch / "install-anthropic-sdk.log", 300)
+        if not all((target / package / "__init__.py").is_file() for package in ("anthropic", "docstring_parser")):
+            raise RuntimeError("Anthropic SDK installation did not produce the expected package")
+        save_json(manifest, files(target))
+    config["_sdk_dir"] = str(target.resolve())
+
+
 def preflight(config, batch):
-    result = require_logged(config["hermes_command"] + ["chat", "--help"], ROOT, batch / "hermes-help.log", 30)
+    native = config.get("provider") == "anthropic"
+    if native:
+        config["_runtime_command"] = resolve_haiku_runtime(config)
+        ensure_haiku_sdk(config, batch)
+        home = batch / "preflight-home"
+        home.mkdir(exist_ok=True)
+        env = agent_env(config, home, ROOT)
+        require_logged(evaluation_hermes_command(config) + ["--check"], ROOT,
+                       batch / "haiku-runtime-check.json", 60, env)
+        proof = json.loads((batch / "haiku-runtime-check.json").read_text())
+        if set(proof["requests"]) != EFFORTS or not proof.get("prior_thinking_replay_verified"):
+            raise RuntimeError("Hermes did not verify all four Haiku effort settings")
+        previous = batch / "haiku-runtime.json"
+        if previous.exists() and json.loads(previous.read_text()) != proof:
+            raise RuntimeError("Hermes runtime or compatibility layer changed; start a new batch")
+        save_json(previous, proof)
+        config["_runtime_proof"] = str(previous)
+    else:
+        env = None
+    result = require_logged(evaluation_hermes_command(config) + ["chat", "--help"], ROOT, batch / "hermes-help.log", 30, env)
     help_text = (batch / "hermes-help.log").read_text()
     for flag in ("--cli", "--oneshot", "--query-file", "--max-turns", "--run-budget", "--reasoning", "--ignore-rules", "--toolsets"):
         if flag not in help_text:
             raise RuntimeError(f"Installed Hermes lacks {flag}; use the working Hermes version that supports evaluation flags")
-    require_logged(config["hermes_command"] + ["--version"], ROOT, batch / "hermes-version.log", 30)
-    req = Request(config["base_url"].rstrip("/") + "/models")
-    if os.environ.get(config["api_key_env"]):
+    require_logged(evaluation_hermes_command(config) + ["--version"], ROOT, batch / "hermes-version.log", 30, env)
+    req = Request(config["base_url"].rstrip("/") + ("/v1/models/" + config["model"] if native else "/models"))
+    if native:
+        req.add_header("x-api-key", os.environ[config["api_key_env"]])
+        req.add_header("anthropic-version", "2023-06-01")
+    elif os.environ.get(config["api_key_env"]):
         req.add_header("Authorization", "Bearer " + os.environ[config["api_key_env"]])
     with build_opener(ProxyHandler({})).open(req, timeout=10) as response:
         models = json.load(response)
-    if config["model"] not in [m.get("id") for m in models.get("data", [])]:
-        raise RuntimeError(f"Configured model alias {config['model']!r} is absent from the local server's /v1/models")
+    available = [models.get("id")] if native else [m.get("id") for m in models.get("data", [])]
+    if config["model"] not in available:
+        raise RuntimeError(f"Configured model {config['model']!r} is absent from the provider's model list")
     save_json(batch / "server-models.json", models)
     return result
 
 
-def prepare_batch(config, batch):
+def prepare_batch(config, batch, inputs_from=None):
     """Download/verify sources and wheels outside any scored timer."""
+    if inputs_from is not None and inputs_from.resolve() == batch.resolve():
+        raise ValueError("--inputs-from must refer to a different batch")
     for case in config["cases"]:
-        require_logged([sys.executable, str(ROOT / "scripts/prepare_case.py"), case, "--verify"],
-                       ROOT, batch / f"prepare-{case}.log", 900)
         frozen = batch / "inputs" / case
         if frozen.exists():
             shutil.rmtree(frozen)
-        frozen.mkdir(parents=True)
-        shutil.copytree(ROOT / ".runs/coding" / case / "base", frozen / "base",
-                        ignore=shutil.ignore_patterns(*EXCLUDE, "*.pyc"))
-        for name in ("case.json", "prompt.md", "check.py"):
-            shutil.copyfile(ROOT / "cases/coding" / case / name, frozen / name)
-        save_json(frozen / "manifest.json", {"base": files(frozen / "base"),
-                  "check_sha256": digest(frozen / "check.py"), "prompt_sha256": digest(frozen / "prompt.md"),
-                  "case_sha256": digest(frozen / "case.json")})
+        if inputs_from:
+            verify_inputs(inputs_from, case)
+            shutil.copytree(inputs_from / "inputs" / case, frozen,
+                            ignore=shutil.ignore_patterns(*EXCLUDE, "*.pyc"))
+        else:
+            require_logged([sys.executable, str(ROOT / "scripts/prepare_case.py"), case, "--verify"],
+                           ROOT, batch / f"prepare-{case}.log", 900)
+            frozen.mkdir(parents=True)
+            shutil.copytree(ROOT / ".runs/coding" / case / "base", frozen / "base",
+                            ignore=shutil.ignore_patterns(*EXCLUDE, "*.pyc"))
+            for name in ("case.json", "prompt.md", "check.py"):
+                shutil.copyfile(ROOT / "cases/coding" / case / name, frozen / name)
+            save_json(frozen / "manifest.json", {"base": files(frozen / "base"),
+                      "check_sha256": digest(frozen / "check.py"), "prompt_sha256": digest(frozen / "prompt.md"),
+                      "case_sha256": digest(frozen / "case.json")})
+    provenance = verify_comparison_inputs(config, batch)
+    save_json(batch / "input-provenance.json", {"source_batch": str(inputs_from.resolve()) if inputs_from else None,
+                                               "cases": provenance})
     wheels = batch / "wheels"
     wheels.mkdir(exist_ok=True)
     require_logged([sys.executable, "-m", "pip", "download", "--only-binary=:all:", "--dest", str(wheels),
@@ -234,6 +351,21 @@ def verify_inputs(batch, case):
     if files(frozen / "base") != manifest["base"]:
         raise RuntimeError(f"Frozen {case} baseline changed; refusing this batch")
     return manifest
+
+
+def verify_comparison_inputs(config, batch):
+    provenance = {}
+    for case in config["cases"]:
+        manifest = verify_inputs(batch, case)
+        tree_hash = hashlib.sha256(json.dumps(manifest["base"], sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        actual = {key: manifest[key] for key in ("prompt_sha256", "check_sha256", "case_sha256")}
+        actual.update(base_tree_sha256=tree_hash,
+                      base_commit=json.loads((batch / "inputs" / case / "case.json").read_text())["base_commit"])
+        expected = config.get("input_fingerprints", {}).get(case)
+        if expected is not None and actual != expected:
+            raise RuntimeError(f"{case} inputs differ from the original Glimmer evaluation; refusing the comparison")
+        provenance[case] = actual
+    return provenance
 
 
 def files(source):
@@ -330,14 +462,19 @@ def run_attempt(config, batch, job):
     home = run / "hermes-home"
     home.mkdir()
     case_dir = batch / "inputs" / job["case_id"]
+    native = config.get("provider") == "anthropic"
+    provider = "anthropic" if native else "glimmer-eval"
     record = {**job, "started_at": utc(), "verdict": "SETUP_ERROR", "process_status": "setup_error",
+              "provider": config.get("provider", "glimmer"), "model": config["model"],
               "filesystem_isolation": "not_enforced", "network_isolation": "not_enforced",
-              "reasoning_control": "custom_provider.extra_body.chat_template_kwargs.reasoning_strength",
+              "reasoning_control": "native_anthropic.thinking.adaptive + output_config.effort" if native else "custom_provider.extra_body.chat_template_kwargs.reasoning_strength",
               "reasoning_verified": False, "reasoning_verification": "configured; no independent request-wire capture",
+              "reasoning_request_builder_verified": native and (batch / "haiku-runtime.json").exists(),
               "source": str(source), "hermes_exit_code": None, "check_exit_code": None}
     save_json(run / "running.json", record)
     setup_started = time.monotonic()
     interrupted = False
+    incompatible = False
     try:
         manifest = verify_inputs(batch, job["case_id"])
         setup_attempt(config, batch, run, source)
@@ -355,8 +492,8 @@ def run_attempt(config, batch, job):
             "Apply a minimal fix, validate it, and finish.\n")
         save_json(home / "config.yaml", hermes_config(config, source, job["reasoning_effort"]))
         env = agent_env(config, home, source)
-        command = config["hermes_command"] + ["--profile", "default", "chat", "--cli", "--oneshot", "--ignore-rules", "--toolsets", "terminal,file",
-                    "--provider", "glimmer-eval", "--model", config["model"], "--reasoning", job["reasoning_effort"],
+        command = evaluation_hermes_command(config) + ["--profile", "default", "chat", "--cli", "--oneshot", "--ignore-rules", "--toolsets", "terminal,file",
+                    "--provider", provider, "--model", config["model"], "--reasoning", job["reasoning_effort"],
                     "--query-file", str(run / "prompt.md"), "--max-turns", str(job["max_turns"]),
                     "--run-budget", str(job["max_seconds"]), "--verbose"]
         save_json(run / "command.json", command)
@@ -366,13 +503,17 @@ def run_attempt(config, batch, job):
         if process["status"] == "completed" and process["exit_code"] != 0:
             record["process_status"] = "hermes_nonzero_exit"
         transcript = (run / "transcript.log").read_text(errors="replace")
+        incompatible = native and "Haiku Hermes compatibility error:" in transcript
+        if incompatible:
+            record.update(verdict="SETUP_ERROR", process_status="runtime_incompatible",
+                          error="Hermes compatibility verification failed; inspect transcript.log and start a new batch after fixing the runtime")
         record["iteration_budget_notice"] = "Iteration budget reached" in transcript
         try:
             ids = re.findall(r"^Session:\s+([A-Za-z0-9_-]+)\s*$", transcript, re.MULTILINE)
             session_id = ids[-1] if ids else None
             # Export the entire fresh home, including compression children. Per-
             # model database deltas and occurrence UIDs prevent double counting.
-            exported = logged(config["hermes_command"] + ["--profile", "default", "sessions", "export", str(run / "session.jsonl"),
+            exported = logged(evaluation_hermes_command(config) + ["--profile", "default", "sessions", "export", str(run / "session.jsonl"),
                               "--format", "jsonl", "--redact"],
                               source, run / "export.log", 30, env)
             if exported["status"] == "interrupted":
@@ -402,8 +543,9 @@ def run_attempt(config, batch, job):
         record["check_seconds"] = checked["elapsed_seconds"]
         if checked["status"] == "interrupted":
             raise KeyboardInterrupt
-        record["verdict"] = {0: "PASS", 1: "FAIL", 2: "SETUP_ERROR"}.get(checked["exit_code"], "CHECK_ERROR") if checked["status"] == "completed" else "CHECK_ERROR"
-        if config.get("upstream_checks", True) and not interrupted:
+        if not incompatible:
+            record["verdict"] = {0: "PASS", 1: "FAIL", 2: "SETUP_ERROR"}.get(checked["exit_code"], "CHECK_ERROR") if checked["status"] == "completed" else "CHECK_ERROR"
+        if config.get("upstream_checks", True) and not interrupted and not incompatible:
             upstream = logged([str(source / ".venv/bin/python"), "-m", "pytest", *TARGETS[job["case_id"]]],
                               source, run / "upstream-check.log", config.get("check_timeout_seconds", 120), env)
             record["upstream_check"] = upstream
@@ -425,7 +567,7 @@ def run_attempt(config, batch, job):
         (run / "running.json").unlink(missing_ok=True)
         write_reports(batch)
     print(f"{job['run_id']}: {record['verdict']} ({record['process_status']}); {run}", flush=True)
-    return interrupted
+    return interrupted or incompatible
 
 
 def acquire_lock(lock):
@@ -455,9 +597,12 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Print matrix and maximum agent time; no calls, files, or downloads")
     parser.add_argument("--prepare-only", action="store_true", help="Verify cases and cache test wheels; print batch path for --resume")
     parser.add_argument("--resume", type=Path, help="Use the frozen configuration of a previous batch; preserve all completed jobs")
+    parser.add_argument("--inputs-from", type=Path, help="Copy verified frozen inputs from an earlier batch; never reuse its agent outputs")
     args = parser.parse_args()
     if args.resume and any((args.cases, args.efforts, args.budgets, args.repeats is not None)):
         parser.error("--resume uses the existing frozen matrix; filters/repeats cannot change it")
+    if args.resume and args.inputs_from:
+        parser.error("--resume already has frozen inputs; --inputs-from applies only to a new batch")
     config = load_config(args.resume / "config.json" if args.resume else args.config)
     if args.cases:
         config["cases"] = args.cases
@@ -483,8 +628,9 @@ def main():
     if sys.version_info < (3, 12):
         parser.error("Use Python 3.12+ for safe source preparation")
     if os.name != "posix":
-        parser.error("This runner targets the Linux 5090 machine (also supports macOS)")
-    batch = args.resume.resolve() if args.resume else ROOT / ".runs/evaluation" / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
+        parser.error("This runner supports Linux and macOS")
+    namespace = "evaluation-haiku" if config.get("provider") == "anthropic" else "evaluation"
+    batch = args.resume.resolve() if args.resume else ROOT / ".runs" / namespace / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
     batch.mkdir(parents=True, exist_ok=bool(args.resume))
     print(f"Batch: {batch}", flush=True)
     # Atomic mkdir prevents two processes rewriting the same batch.
@@ -504,10 +650,9 @@ def main():
                       "metrics_sha256": digest(ROOT / "scripts/eval_metrics.py"), "created_at": utc()})
         preflight(config, batch)
         if not (batch / "prepared.json").exists():
-            prepare_batch(config, batch)
+            prepare_batch(config, batch, args.inputs_from.resolve() if args.inputs_from else None)
             save_json(batch / "prepared.json", {"prepared_at": utc()})
-        for case in config["cases"]:
-            verify_inputs(batch, case)
+        verify_comparison_inputs(config, batch)
         expected_wheels = json.loads((batch / "wheel-hashes.json").read_text())
         if {p.name: digest(p) for p in (batch / "wheels").glob("*.whl")} != expected_wheels:
             raise RuntimeError("Frozen dependency wheels changed; refusing this batch")
@@ -527,7 +672,8 @@ def main():
                 save_json(archive / "result.json", {**job, "verdict": "UNKNOWN", "process_status": "supervisor_interrupted", "error": "Incomplete attempt archived before fresh infrastructure retry"})
             print(f"[{index}/{len(jobs)}] starting {job['run_id']}", flush=True)
             if run_attempt(config, batch, job):
-                return 130
+                last = json.loads((run / "result.json").read_text())
+                return 2 if last["process_status"] == "runtime_incompatible" else 130
         write_reports(batch)
         print(f"Reports: {batch / 'results.csv'} and {batch / 'summary.md'}", flush=True)
         return 0

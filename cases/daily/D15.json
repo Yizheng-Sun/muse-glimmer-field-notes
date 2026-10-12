@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "case_id": "D15",
+  "title": "Meeting preparation",
+  "provenance": {
+    "kind": "synthetic_inspired_by_firsthand_report",
+    "source_id": "S06",
+    "source_url": "https://www.reddit.com/r/ClaudeAI/comments/1rn9ojd/what_are_your_best_cowork_examples_use_cases/",
+    "researched_on": "2026-10-11"
+  },
+  "scope": "Supplied meeting notes; factual coverage, not subjective brief quality",
+  "variants": {
+    "normal": {
+      "files": {
+        "inputs/notes/01.md": "[N1] 2026-10-08 Project Orchard: use North Hall. T1: Alex to send invitation, open.",
+        "inputs/notes/02.md": "[N2] 2026-10-10 Project Orchard: venue changed to South Hall. T1 now owned by Alex, still open.",
+        "inputs/notes/03.md": "[N3] 2026-10-11 Project Harbor: use West Hall. T9: Pat to send invoice, open.",
+        "inputs/meeting.md": "Prepare for Project Orchard's community-event planning meeting on 2026-10-12."
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Read the upcoming meeting and earlier notes. Distinguish projects, prefer latest decisions, and save a preparation brief. Result shape: {project,venue,decision_source_id,open_commitments:[{id,owner,source_id}],irrelevant_note_ids}. Do not import commitments from unrelated projects.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "project": "Orchard",
+            "venue": "South Hall",
+            "decision_source_id": "N2",
+            "open_commitments": [
+              {
+                "id": "T1",
+                "owner": "Alex",
+                "source_id": "N2"
+              }
+            ],
+            "irrelevant_note_ids": [
+              "N3"
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        }
+      ]
+    },
+    "update": {
+      "files": {
+        "inputs/notes/01.md": "[N1] 2026-10-08 Project Orchard: use North Hall. T1: Alex to send invitation, open.",
+        "inputs/notes/02.md": "[N2] 2026-10-10 Project Orchard: venue changed to South Hall. T1 now owned by Morgan, still open.",
+        "inputs/notes/03.md": "[N3] 2026-10-11 Project Harbor: use West Hall. T9: Pat to send invoice, open.",
+        "inputs/meeting.md": "Prepare for Project Orchard's community-event planning meeting on 2026-10-12."
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Read the upcoming meeting and earlier notes. Distinguish projects, prefer latest decisions, and save a preparation brief. Result shape: {project,venue,decision_source_id,open_commitments:[{id,owner,source_id}],irrelevant_note_ids}. Do not import commitments from unrelated projects.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "project": "Orchard",
+            "venue": "South Hall",
+            "decision_source_id": "N2",
+            "open_commitments": [
+              {
+                "id": "T1",
+                "owner": "Morgan",
+                "source_id": "N2"
+              }
+            ],
+            "irrelevant_note_ids": [
+              "N3"
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        }
+      ]
+    },
+    "problem": {
+      "files": {
+        "inputs/notes/01.md": "[N1] 2026-10-08 Project Orchard: use North Hall. T1: Alex to send invitation, open.",
+        "inputs/notes/02.md": "[N2] 2026-10-10 Project Orchard: venue changed to South Hall. T1 now owned by Alex, still open.",
+        "inputs/notes/03.md": "[N3] 2026-10-11 Project Harbor: use West Hall. T9: Pat to send invoice, open.",
+        "inputs/notes/04.md": "[N4] 2026-10-11 Orchard newsletter (a different project): publication is in West Hall.",
+        "inputs/meeting.md": "Prepare for Project Orchard's community-event planning meeting on 2026-10-12."
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Read the upcoming meeting and earlier notes. Distinguish projects, prefer latest decisions, and save a preparation brief. Result shape: {project,venue,decision_source_id,open_commitments:[{id,owner,source_id}],irrelevant_note_ids}. Do not import commitments from unrelated projects.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "project": "Orchard",
+            "venue": "South Hall",
+            "decision_source_id": "N2",
+            "open_commitments": [
+              {
+                "id": "T1",
+                "owner": "Alex",
+                "source_id": "N2"
+              }
+            ],
+            "irrelevant_note_ids": [
+              "N3",
+              "N4"
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        }
+      ]
+    }
+  }
+}

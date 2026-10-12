@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "case_id": "D10",
+  "title": "School-message action extraction",
+  "provenance": {
+    "kind": "synthetic_inspired_by_firsthand_report",
+    "source_id": "S05",
+    "source_url": "https://www.reddit.com/r/AI_Agents/comments/1udd09j/ai_agents_feel_one_step_away_from_a_real_personal/",
+    "researched_on": "2026-10-11"
+  },
+  "scope": "Synthetic chat exports; no group-chat integration",
+  "variants": {
+    "normal": {
+      "files": {
+        "inputs/messages.txt": "[S1] 2026-10-12 09:00 Europe/London: Football tomorrow at 17:00 for one hour, at Main Gym. Bring boots.\n[S2] 2026-10-12 09:10 Europe/London: School photo consent due Friday 16 October. Bring the form.\n[S3] 2026-10-12 10:00 Europe/London: Thanks everyone! Lovely weather.\n[S4] 2026-10-12 11:00 Europe/London: Judo on 14 October at 16:00 is cancelled.",
+        "inputs/family-calendar.json": "[\n  {\n    \"id\": \"pickup\",\n    \"start\": \"2026-10-13T17:30:00+01:00\",\n    \"duration_minutes\": 30\n  }\n]\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Extract actionable school/activity messages; do not turn chatter into tasks. Use message dates to interpret tomorrow. Result fields: events:[{id,start,duration_minutes,venue}], actions:[{id,due,source_id}], cancelled_ids, conflict_ids, needs_review_ids. Use event IDs football, judo; action IDs boots, consent; existing calendar ID pickup. Flag conflicts with the supplied family calendar.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "events": [
+              {
+                "id": "football",
+                "start": "2026-10-13T17:00:00+01:00",
+                "duration_minutes": 60,
+                "venue": "Main Gym"
+              }
+            ],
+            "actions": [
+              {
+                "id": "boots",
+                "due": "2026-10-13",
+                "source_id": "S1"
+              },
+              {
+                "id": "consent",
+                "due": "2026-10-16",
+                "source_id": "S2"
+              }
+            ],
+            "cancelled_ids": [
+              "judo"
+            ],
+            "conflict_ids": [
+              "football",
+              "pickup"
+            ],
+            "needs_review_ids": []
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        }
+      ]
+    },
+    "update": {
+      "files": {
+        "inputs/messages.txt": "[S1] 2026-10-12 09:00 Europe/London: Football tomorrow at 17:00 for one hour, at Main Gym. Bring boots.\n[S2] 2026-10-12 09:10 Europe/London: School photo consent due Friday 16 October. Bring the form.\n[S3] 2026-10-12 10:00 Europe/London: Thanks everyone! Lovely weather.\n[S4] 2026-10-12 11:00 Europe/London: Judo on 14 October at 16:00 is cancelled.\n[S5] 2026-10-12 12:00 Europe/London: Football venue changed to East Gym. Same date and time.",
+        "inputs/family-calendar.json": "[\n  {\n    \"id\": \"pickup\",\n    \"start\": \"2026-10-13T17:30:00+01:00\",\n    \"duration_minutes\": 30\n  }\n]\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Extract actionable school/activity messages; do not turn chatter into tasks. Use message dates to interpret tomorrow. Result fields: events:[{id,start,duration_minutes,venue}], actions:[{id,due,source_id}], cancelled_ids, conflict_ids, needs_review_ids. Use event IDs football, judo; action IDs boots, consent; existing calendar ID pickup. Flag conflicts with the supplied family calendar.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "events": [
+              {
+                "id": "football",
+                "start": "2026-10-13T17:00:00+01:00",
+                "duration_minutes": 60,
+                "venue": "East Gym"
+              }
+            ],
+            "actions": [
+              {
+                "id": "boots",
+                "due": "2026-10-13",
+                "source_id": "S1"
+              },
+              {
+                "id": "consent",
+                "due": "2026-10-16",
+                "source_id": "S2"
+              }
+            ],
+            "cancelled_ids": [
+              "judo"
+            ],
+            "conflict_ids": [
+              "football",
+              "pickup"
+            ],
+            "needs_review_ids": []
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        }
+      ]
+    },
+    "problem": {
+      "files": {
+        "inputs/messages.txt": "[S1] 2026-10-12 09:00 Europe/London: Football tomorrow at 17:00 for one hour, at Main Gym. Bring boots.\n[S2] 2026-10-12 09:10 Europe/London: School photo consent due Friday 16 October. Bring the form.\n[S3] 2026-10-12 10:00 Europe/London: Thanks everyone! Lovely weather.\n[S4] 2026-10-12 11:00 Europe/London: Judo on 14 October at 16:00 is cancelled.\n[S6] 2026-10-12 12:00 Europe/London: Birthday party sometime next week, time and venue still unconfirmed.",
+        "inputs/family-calendar.json": "[\n  {\n    \"id\": \"pickup\",\n    \"start\": \"2026-10-13T17:30:00+01:00\",\n    \"duration_minutes\": 30\n  }\n]\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Extract actionable school/activity messages; do not turn chatter into tasks. Use message dates to interpret tomorrow. Result fields: events:[{id,start,duration_minutes,venue}], actions:[{id,due,source_id}], cancelled_ids, conflict_ids, needs_review_ids. Use event IDs football, judo; action IDs boots, consent; existing calendar ID pickup. Flag conflicts with the supplied family calendar.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "events": [
+              {
+                "id": "football",
+                "start": "2026-10-13T17:00:00+01:00",
+                "duration_minutes": 60,
+                "venue": "Main Gym"
+              }
+            ],
+            "actions": [
+              {
+                "id": "boots",
+                "due": "2026-10-13",
+                "source_id": "S1"
+              },
+              {
+                "id": "consent",
+                "due": "2026-10-16",
+                "source_id": "S2"
+              }
+            ],
+            "cancelled_ids": [
+              "judo"
+            ],
+            "conflict_ids": [
+              "football",
+              "pickup"
+            ],
+            "needs_review_ids": [
+              "S6"
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        }
+      ]
+    }
+  }
+}

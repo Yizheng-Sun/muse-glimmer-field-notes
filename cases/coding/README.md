@@ -1,13 +1,13 @@
-# Coding cases: local preparation complete
+# Coding cases: preparation and evaluation complete
 
-Four cases are **prepared locally**, selected on 9 October 2026 from Click and Packaging. Each unchanged behavior check fails on its pinned starting commit and passes on its upstream fixed commit on this Mac. C01 has also been verified on the 5090; its [first autonomous attempt failed acceptance](../../evidence/coding/C01/attempt-01-analysis.md), and an [assisted continuation produced a partial fix but still failed](../../evidence/coding/C01/assisted-continuation-analysis.md). C02's [first autonomous attempt passed acceptance](../../evidence/coding/C02/attempt-01-analysis.md), with incomplete upstream test maintenance. Linux preparation evidence for C02–C04 remains pending. The owner chose Hermes' local backend; filesystem and public-network isolation are not enforced for these runs.
+Four cases were selected on 9 October 2026 from Click and Packaging. Each unchanged behavior check fails on its pinned starting commit and passes on its upstream fixed commit, verified on this Mac and during 5090 preparation. The [48-run evaluation completed on 11 October](../../results/evaluation-report-2026-10-11.md): 16 PASS and 32 FAIL. Earlier individual C01 [autonomous](../../evidence/coding/C01/attempt-01-analysis.md) and [assisted](../../evidence/coding/C01/assisted-continuation-analysis.md) attempts failed; C02's [individual attempt passed](../../evidence/coding/C02/attempt-01-analysis.md), with incomplete upstream test maintenance. The owner chose Hermes' local backend; filesystem and public-network isolation are not enforced for these runs.
 
 | Case | Repository | Observable requirement | PR report / merge date | Local check methods | Status |
 | --- | --- | --- | --- | --- | --- |
-| [C01](C01/prompt.md) | Click | Environment-variable hints handle sequences and empty values | 6 Oct / 6 Oct | 6 | First autonomous FAIL |
-| [C02](C02/prompt.md) | Click | Generated short help preserves abbreviations and respects width | 11 Sep / 12 Sep | 5 | First autonomous PASS |
-| [C03](C03/prompt.md) | Packaging | Direct-reference requirement URLs reject embedded line breaks | 10 Aug / 1 Oct | 3 | Prepared locally |
-| [C04](C04/prompt.md) | Packaging | License-file validation rejects Windows drive-relative paths | 11 Aug / 2 Oct | 4 | Prepared locally |
+| [C01](C01/prompt.md) | Click | Environment-variable hints handle sequences and empty values | 6 Oct / 6 Oct | 6 | Matrix: 0/12 PASS |
+| [C02](C02/prompt.md) | Click | Generated short help preserves abbreviations and respects width | 11 Sep / 12 Sep | 5 | Matrix: 5/12 PASS |
+| [C03](C03/prompt.md) | Packaging | Direct-reference requirement URLs reject embedded line breaks | 10 Aug / 1 Oct | 3 | Matrix: 4/12 PASS |
+| [C04](C04/prompt.md) | Packaging | License-file validation rejects Windows drive-relative paths | 11 Aug / 2 Oct | 4 | Matrix: 7/12 PASS |
 
 All dates above are in 2026, UTC. PR creation is the earliest verified report for these four; none has a linked standalone issue. Recent **merges** were the selection criterion, so the older Packaging report dates are disclosed. C02 uses the permitted 30-day expansion to keep two source repositories and add a text-formatting case. These are small calibration problems, not a representative benchmark of general coding ability.
 
@@ -103,9 +103,9 @@ Also inspect the patch and run relevant upstream tests as appropriate. The prepa
 
 - [x] Four cases pinned; sanitized prompts, behavioral checks and local evidence committed.
 - [x] Same check demonstrably fails before and passes after each upstream fix on this Mac.
-- [ ] Repeat preparation on the 5090 and record Linux evidence and setup duration.
+- [x] Repeat preparation on the 5090; all four base/fixed checks and the environment are recorded in the batch artifacts.
 - [x] Record the chosen local backend and lack of enforced filesystem/network isolation for C01 and C02.
-- [ ] Confirm fresh-session behavior for each remaining autonomous case on the 5090.
-- [ ] Prepare and confirm upstream test-runner availability inside the agent boundary if using pytest regressions.
+- [x] Use fresh Hermes homes and source directories for all 48 matrix attempts.
+- [x] Install the upstream test runner and collect/run focused tests for all 48 attempts.
 - [ ] Record and freeze the existing model/runtime settings.
-- [ ] Run C03 and C04, preserving C01's original failure, its separate assisted partial-fix result, and C02's original pass.
+- [x] Run C03 and C04 in the matrix, preserving the earlier C01/C02 attempts separately.

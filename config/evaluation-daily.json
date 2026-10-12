@@ -1,0 +1,16 @@
+{
+  "provider": "glimmer",
+  "cases": ["D02", "D06", "D09", "D12"],
+  "variants": ["normal", "update", "problem"],
+  "reasoning_efforts": ["low"],
+  "budgets": [{"name": "standard", "max_turns": 30, "max_seconds": 900}],
+  "repeats": 2,
+  "shuffle_seed": 42,
+  "base_url": "http://127.0.0.1:8081/v1",
+  "model": "muse-glimmer",
+  "context_length": 131072,
+  "sampling": {"temperature": 1.0, "top_p": 0.95, "top_k": 64},
+  "api_key_env": "GLIMMER_API_KEY",
+  "hermes_command": ["hermes"],
+  "check_timeout_seconds": 120
+}

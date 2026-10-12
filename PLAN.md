@@ -4,11 +4,13 @@ Prepared: 9 October 2026
 
 Target article: **Living With Muse Glimmer: A Local Always-On Agent With a Single 5090**
 
-Current status: **Muse Glimmer and Hermes are fully set up. C01–C04 are prepared and verified locally on this Mac; 5090 validation remains pending.** Use one GitHub repository, edited on this computer and pulled on the 5090 machine. Runtime installation is complete; record the existing settings rather than rebuilding the setup. The next step is to repeat case preparation on the 5090 and verify the agent boundary before scored attempts.
+Current status (11 October 2026): **Muse Glimmer and Hermes are fully set up. C01–C04 have completed preparation and the 48-run evaluation on the 5090: 16 PASS and 32 FAIL.** Use one GitHub repository, edited on this computer and pulled on the 5090 machine. See the [evaluation report](results/evaluation-report-2026-10-11.md) for all outcomes and metrics. The local backend does not enforce filesystem/network isolation. The automated synthetic daily-task suite is implemented; model runs, personal-material trials, scheduled observation, and the final blog remain outstanding.
 
 Private repository: [Yizheng-Sun/muse-glimmer-field-notes](https://github.com/Yizheng-Sun/muse-glimmer-field-notes).
 
 **10 October scope update:** the owner requested automated evaluation of all four coding cases across budgets and `low`, `medium`, `high`, `xhigh` reasoning. The [evaluation configuration](config/evaluation.json) defaults to 48 fresh sequential runs with 15/30/60 tool-calling iterations and 5/10/20-minute limits. This extends the original single-attempt protocol below. Keep the original C01/C02 results separate; use the [runner guide](docs/EVALUATION.md) for the new comparison. The wrapper and reporting script use the standard library and the existing Hermes agent.
+
+**11 October daily-task scope update:** the owner requested automatic execution and evaluation of the [15 researched daily tasks](results/daily-task-research-2026-10-11.md). [The daily suite](docs/DAILY_EVALUATION.md) supplies 45 synthetic fixtures with fixed objective checks and no LLM judge. Its default 24-attempt batch selects D02, D06, D09, and D12; all 15 tasks are selectable. D02, D05, and D09 cover the bounded article-capture, blog-revision, and handover behaviors in W02–W04 below. D01 covers supplied calendar/workload calculations, not the complete W01 briefing. These automatic calibration tasks supplement the original personal-material and scheduled observation protocol. Human review remains necessary for prose and usefulness.
 
 ## 1. Goal and scope
 

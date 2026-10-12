@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "case_id": "D02",
+  "title": "Article capture",
+  "provenance": {
+    "kind": "synthetic_inspired_by_firsthand_report",
+    "source_id": "S01",
+    "source_url": "https://sajalsharma.com/posts/openclaw-experiments/",
+    "researched_on": "2026-10-11"
+  },
+  "scope": "Local synthetic HTTP articles; retrieval and saved notes, not open-web browsing",
+  "variants": {
+    "normal": {
+      "files": {
+        "inputs/queue.json": "[\n  \"{{WEB}}/articles/backup.html\",\n  \"{{WEB}}/articles/reading.html\",\n  \"{{WEB}}/articles/backup.html\"\n]\n",
+        "reading/index.json": "{\n  \"entries\": []\n}\n"
+      },
+      "web_files": {
+        "/articles/backup.html": "<h1>Backup routine</h1><p id='p1'>Keep 7 daily snapshots.</p><p id='p2'>Test a restore every 30 days.</p>",
+        "/articles/reading.html": "<h1>Reading routine</h1><p id='p1'>Review notes after 2 days.</p><p id='p2'>Limit the reading inbox to 10 items.</p>"
+      },
+      "phases": [
+        {
+          "prompt": "Fetch each URL in inputs/queue.json. Save one Markdown note per successfully retrieved article under reading/notes/<id>.md and a reading/index.json using this shape: {\"entries\":[{\"id\":\"...\",\"path\":\"reading/notes/<id>.md\"}]}. Deduplicate by URL. outputs/result.json has articles (one object per successful URL, with the id, url, numerical facts and paragraph IDs from that page) and failed_urls. The backup article uses snapshot_days and restore_interval_days; reading uses review_after_days and inbox_limit; each uses citations. Never fill in an unavailable page from your knowledge.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        },
+        {
+          "prompt": "Repeat the capture request from inputs/queue.json. Update existing notes without duplicating index entries. Fetch each URL in inputs/queue.json. Save one Markdown note per successfully retrieved article under reading/notes/<id>.md and a reading/index.json using this shape: {\"entries\":[{\"id\":\"...\",\"path\":\"reading/notes/<id>.md\"}]}. Deduplicate by URL. outputs/result.json has articles (one object per successful URL, with the id, url, numerical facts and paragraph IDs from that page) and failed_urls. The backup article uses snapshot_days and restore_interval_days; reading uses review_after_days and inbox_limit; each uses citations. Never fill in an unavailable page from your knowledge.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [
+        "reading/index.json"
+      ],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "articles": [
+              {
+                "id": "backup",
+                "url": "{{WEB}}/articles/backup.html",
+                "snapshot_days": 7,
+                "restore_interval_days": 30,
+                "citations": [
+                  "p1",
+                  "p2"
+                ]
+              },
+              {
+                "id": "reading",
+                "url": "{{WEB}}/articles/reading.html",
+                "review_after_days": 2,
+                "inbox_limit": 10,
+                "citations": [
+                  "p1",
+                  "p2"
+                ]
+              }
+            ],
+            "failed_urls": []
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "json",
+          "path": "reading/index.json",
+          "expected": {
+            "entries": [
+              {
+                "id": "backup",
+                "path": "reading/notes/backup.md"
+              },
+              {
+                "id": "reading",
+                "path": "reading/notes/reading.md"
+              }
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "reading/notes/backup.md",
+          "min_chars": 40,
+          "contains": [
+            "{{WEB}}/articles/backup.html",
+            "7",
+            "30"
+          ]
+        },
+        {
+          "kind": "text",
+          "path": "reading/notes/reading.md",
+          "min_chars": 40,
+          "contains": [
+            "{{WEB}}/articles/reading.html",
+            "2",
+            "10"
+          ]
+        },
+        {
+          "kind": "retrieval",
+          "path": "HTTP requests",
+          "required": {
+            "/articles/backup.html": 200,
+            "/articles/reading.html": 200
+          }
+        }
+      ]
+    },
+    "update": {
+      "files": {
+        "inputs/queue.json": "[\n  \"{{WEB}}/articles/backup.html\",\n  \"{{WEB}}/articles/reading.html\",\n  \"{{WEB}}/articles/backup.html\"\n]\n",
+        "reading/index.json": "{\n  \"entries\": []\n}\n"
+      },
+      "web_files": {
+        "/articles/backup.html": "<h1>Backup routine</h1><p id='p1'>Keep 14 daily snapshots.</p><p id='p2'>Test a restore every 30 days.</p>",
+        "/articles/reading.html": "<h1>Reading routine</h1><p id='p1'>Review notes after 2 days.</p><p id='p2'>Limit the reading inbox to 10 items.</p>"
+      },
+      "phases": [
+        {
+          "prompt": "Fetch each URL in inputs/queue.json. Save one Markdown note per successfully retrieved article under reading/notes/<id>.md and a reading/index.json using this shape: {\"entries\":[{\"id\":\"...\",\"path\":\"reading/notes/<id>.md\"}]}. Deduplicate by URL. outputs/result.json has articles (one object per successful URL, with the id, url, numerical facts and paragraph IDs from that page) and failed_urls. The backup article uses snapshot_days and restore_interval_days; reading uses review_after_days and inbox_limit; each uses citations. Never fill in an unavailable page from your knowledge.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        },
+        {
+          "prompt": "Repeat the capture request from inputs/queue.json. Update existing notes without duplicating index entries. Fetch each URL in inputs/queue.json. Save one Markdown note per successfully retrieved article under reading/notes/<id>.md and a reading/index.json using this shape: {\"entries\":[{\"id\":\"...\",\"path\":\"reading/notes/<id>.md\"}]}. Deduplicate by URL. outputs/result.json has articles (one object per successful URL, with the id, url, numerical facts and paragraph IDs from that page) and failed_urls. The backup article uses snapshot_days and restore_interval_days; reading uses review_after_days and inbox_limit; each uses citations. Never fill in an unavailable page from your knowledge.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [
+        "reading/index.json"
+      ],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "articles": [
+              {
+                "id": "backup",
+                "url": "{{WEB}}/articles/backup.html",
+                "snapshot_days": 14,
+                "restore_interval_days": 30,
+                "citations": [
+                  "p1",
+                  "p2"
+                ]
+              },
+              {
+                "id": "reading",
+                "url": "{{WEB}}/articles/reading.html",
+                "review_after_days": 2,
+                "inbox_limit": 10,
+                "citations": [
+                  "p1",
+                  "p2"
+                ]
+              }
+            ],
+            "failed_urls": []
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "json",
+          "path": "reading/index.json",
+          "expected": {
+            "entries": [
+              {
+                "id": "backup",
+                "path": "reading/notes/backup.md"
+              },
+              {
+                "id": "reading",
+                "path": "reading/notes/reading.md"
+              }
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "reading/notes/backup.md",
+          "min_chars": 40,
+          "contains": [
+            "{{WEB}}/articles/backup.html",
+            "14",
+            "30"
+          ]
+        },
+        {
+          "kind": "text",
+          "path": "reading/notes/reading.md",
+          "min_chars": 40,
+          "contains": [
+            "{{WEB}}/articles/reading.html",
+            "2",
+            "10"
+          ]
+        },
+        {
+          "kind": "retrieval",
+          "path": "HTTP requests",
+          "required": {
+            "/articles/backup.html": 200,
+            "/articles/reading.html": 200
+          }
+        }
+      ]
+    },
+    "problem": {
+      "files": {
+        "inputs/queue.json": "[\n  \"{{WEB}}/articles/backup.html\",\n  \"{{WEB}}/articles/reading.html\",\n  \"{{WEB}}/articles/backup.html\",\n  \"{{WEB}}/articles/missing.html\"\n]\n",
+        "reading/index.json": "{\n  \"entries\": []\n}\n"
+      },
+      "web_files": {
+        "/articles/backup.html": "<h1>Backup routine</h1><p id='p1'>Keep 7 daily snapshots.</p><p id='p2'>Test a restore every 30 days.</p>",
+        "/articles/reading.html": "<h1>Reading routine</h1><p id='p1'>Review notes after 2 days.</p><p id='p2'>Limit the reading inbox to 10 items.</p>"
+      },
+      "phases": [
+        {
+          "prompt": "Fetch each URL in inputs/queue.json. Save one Markdown note per successfully retrieved article under reading/notes/<id>.md and a reading/index.json using this shape: {\"entries\":[{\"id\":\"...\",\"path\":\"reading/notes/<id>.md\"}]}. Deduplicate by URL. outputs/result.json has articles (one object per successful URL, with the id, url, numerical facts and paragraph IDs from that page) and failed_urls. The backup article uses snapshot_days and restore_interval_days; reading uses review_after_days and inbox_limit; each uses citations. Never fill in an unavailable page from your knowledge.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        },
+        {
+          "prompt": "Repeat the capture request from inputs/queue.json. Update existing notes without duplicating index entries. Fetch each URL in inputs/queue.json. Save one Markdown note per successfully retrieved article under reading/notes/<id>.md and a reading/index.json using this shape: {\"entries\":[{\"id\":\"...\",\"path\":\"reading/notes/<id>.md\"}]}. Deduplicate by URL. outputs/result.json has articles (one object per successful URL, with the id, url, numerical facts and paragraph IDs from that page) and failed_urls. The backup article uses snapshot_days and restore_interval_days; reading uses review_after_days and inbox_limit; each uses citations. Never fill in an unavailable page from your knowledge.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [
+        "reading/index.json"
+      ],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "articles": [
+              {
+                "id": "backup",
+                "url": "{{WEB}}/articles/backup.html",
+                "snapshot_days": 7,
+                "restore_interval_days": 30,
+                "citations": [
+                  "p1",
+                  "p2"
+                ]
+              },
+              {
+                "id": "reading",
+                "url": "{{WEB}}/articles/reading.html",
+                "review_after_days": 2,
+                "inbox_limit": 10,
+                "citations": [
+                  "p1",
+                  "p2"
+                ]
+              }
+            ],
+            "failed_urls": [
+              "{{WEB}}/articles/missing.html"
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "json",
+          "path": "reading/index.json",
+          "expected": {
+            "entries": [
+              {
+                "id": "backup",
+                "path": "reading/notes/backup.md"
+              },
+              {
+                "id": "reading",
+                "path": "reading/notes/reading.md"
+              }
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "reading/notes/backup.md",
+          "min_chars": 40,
+          "contains": [
+            "{{WEB}}/articles/backup.html",
+            "7",
+            "30"
+          ]
+        },
+        {
+          "kind": "text",
+          "path": "reading/notes/reading.md",
+          "min_chars": 40,
+          "contains": [
+            "{{WEB}}/articles/reading.html",
+            "2",
+            "10"
+          ]
+        },
+        {
+          "kind": "retrieval",
+          "path": "HTTP requests",
+          "required": {
+            "/articles/backup.html": 200,
+            "/articles/reading.html": 200,
+            "/articles/missing.html": 404
+          }
+        }
+      ]
+    }
+  }
+}

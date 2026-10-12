@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "case_id": "D04",
+  "title": "Research reading shortlist",
+  "provenance": {
+    "kind": "synthetic_inspired_by_firsthand_report",
+    "source_id": "S02",
+    "source_url": "https://guochengqian.github.io/blog/hermes-agent/",
+    "researched_on": "2026-10-11"
+  },
+  "scope": "A frozen local feed; selection and freshness, not open-web discovery",
+  "variants": {
+    "normal": {
+      "files": {
+        "inputs/request.md": "Topic: local agents. Inclusive publication window: 8–11 October 2026.\nFeed: {{WEB}}/research/feed.html"
+      },
+      "web_files": {
+        "/research/R1.html": "<h1>Local assistant memory study</h1><p id='date'>Published: 2026-10-09</p><p id='topic'>Topic: local agents</p><p id='sample'>Participants: 18</p>",
+        "/research/R2.html": "<h1>On-device document agents</h1><p id='date'>Published: 2026-10-10</p><p id='topic'>Topic: local agents</p><p id='sample'>Participants: 24</p>",
+        "/research/R3.html": "<h1>An older local agent study</h1><p id='date'>Published: 2026-09-01</p><p id='topic'>Topic: local agents</p><p id='sample'>Participants: 11</p>",
+        "/research/R4.html": "<h1>Garden soil study</h1><p id='date'>Published: 2026-10-10</p><p id='topic'>Topic: gardening</p><p id='sample'>Participants: 9</p>",
+        "/research/feed.html": "<a href='R1.html'>Local assistant memory study</a>\n<a href='R2.html'>On-device document agents</a>\n<a href='R3.html'>An older local agent study</a>\n<a href='R4.html'>Garden soil study</a>"
+      },
+      "phases": [
+        {
+          "prompt": "Read inputs/request.md and fetch the local feed and candidate pages. Select all and only sources matching both topic and publication window. The result has selected:[{id,published,participants,url}] and uncertain_date_ids. Save a linked reading shortlist and explain exclusions in the report.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "selected": [
+              {
+                "id": "R1",
+                "published": "2026-10-09",
+                "participants": 18,
+                "url": "{{WEB}}/research/R1.html"
+              },
+              {
+                "id": "R2",
+                "published": "2026-10-10",
+                "participants": 24,
+                "url": "{{WEB}}/research/R2.html"
+              }
+            ],
+            "uncertain_date_ids": []
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "retrieval",
+          "path": "HTTP requests",
+          "required": {
+            "/research/R1.html": 200,
+            "/research/R2.html": 200,
+            "/research/R3.html": 200,
+            "/research/R4.html": 200,
+            "/research/feed.html": 200
+          }
+        }
+      ]
+    },
+    "update": {
+      "files": {
+        "inputs/request.md": "Topic: local agents. Inclusive publication window: 8–11 October 2026.\nFeed: {{WEB}}/research/feed.html"
+      },
+      "web_files": {
+        "/research/R1.html": "<h1>Local assistant memory study</h1><p id='date'>Published: 2026-10-09</p><p id='topic'>Topic: local agents</p><p id='sample'>Participants: 18</p>",
+        "/research/R2.html": "<h1>On-device document agents</h1><p id='date'>Published: 2026-10-10</p><p id='topic'>Topic: local agents</p><p id='sample'>Participants: 24</p>",
+        "/research/R3.html": "<h1>An older local agent study</h1><p id='date'>Published: 2026-09-01</p><p id='topic'>Topic: local agents</p><p id='sample'>Participants: 11</p>",
+        "/research/R4.html": "<h1>Garden soil study</h1><p id='date'>Published: 2026-10-10</p><p id='topic'>Topic: gardening</p><p id='sample'>Participants: 9</p>",
+        "/research/R5.html": "<h1>Fresh local assistant study</h1><p id='date'>Published: 2026-10-11</p><p id='topic'>Topic: local agents</p><p id='sample'>Participants: 30</p>",
+        "/research/feed.html": "<a href='R1.html'>Local assistant memory study</a>\n<a href='R2.html'>On-device document agents</a>\n<a href='R3.html'>An older local agent study</a>\n<a href='R4.html'>Garden soil study</a>\n<a href='R5.html'>Fresh local assistant study</a>"
+      },
+      "phases": [
+        {
+          "prompt": "Read inputs/request.md and fetch the local feed and candidate pages. Select all and only sources matching both topic and publication window. The result has selected:[{id,published,participants,url}] and uncertain_date_ids. Save a linked reading shortlist and explain exclusions in the report.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "selected": [
+              {
+                "id": "R1",
+                "published": "2026-10-09",
+                "participants": 18,
+                "url": "{{WEB}}/research/R1.html"
+              },
+              {
+                "id": "R2",
+                "published": "2026-10-10",
+                "participants": 24,
+                "url": "{{WEB}}/research/R2.html"
+              },
+              {
+                "id": "R5",
+                "published": "2026-10-11",
+                "participants": 30,
+                "url": "{{WEB}}/research/R5.html"
+              }
+            ],
+            "uncertain_date_ids": []
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "retrieval",
+          "path": "HTTP requests",
+          "required": {
+            "/research/R1.html": 200,
+            "/research/R2.html": 200,
+            "/research/R3.html": 200,
+            "/research/R4.html": 200,
+            "/research/R5.html": 200,
+            "/research/feed.html": 200
+          }
+        }
+      ]
+    },
+    "problem": {
+      "files": {
+        "inputs/request.md": "Topic: local agents. Inclusive publication window: 8–11 October 2026.\nFeed: {{WEB}}/research/feed.html"
+      },
+      "web_files": {
+        "/research/R1.html": "<h1>Local assistant memory study</h1><p id='date'>Published: 2026-10-09</p><p id='topic'>Topic: local agents</p><p id='sample'>Participants: 18</p>",
+        "/research/R2.html": "<h1>On-device document agents</h1><p id='date'>Published: 2026-10-10</p><p id='topic'>Topic: local agents</p><p id='sample'>Participants: 24</p>",
+        "/research/R3.html": "<h1>An older local agent study</h1><p id='date'>Published: 2026-09-01</p><p id='topic'>Topic: local agents</p><p id='sample'>Participants: 11</p>",
+        "/research/R4.html": "<h1>Garden soil study</h1><p id='date'>Published: 2026-10-10</p><p id='topic'>Topic: gardening</p><p id='sample'>Participants: 9</p>",
+        "/research/R6.html": "<h1>Undated assistant claim</h1><p id='date'>Published: unknown</p><p id='topic'>Topic: local agents</p><p id='sample'>Participants: 20</p>",
+        "/research/feed.html": "<a href='R1.html'>Local assistant memory study</a>\n<a href='R2.html'>On-device document agents</a>\n<a href='R3.html'>An older local agent study</a>\n<a href='R4.html'>Garden soil study</a>\n<a href='R6.html'>Undated assistant claim</a>"
+      },
+      "phases": [
+        {
+          "prompt": "Read inputs/request.md and fetch the local feed and candidate pages. Select all and only sources matching both topic and publication window. The result has selected:[{id,published,participants,url}] and uncertain_date_ids. Save a linked reading shortlist and explain exclusions in the report.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "selected": [
+              {
+                "id": "R1",
+                "published": "2026-10-09",
+                "participants": 18,
+                "url": "{{WEB}}/research/R1.html"
+              },
+              {
+                "id": "R2",
+                "published": "2026-10-10",
+                "participants": 24,
+                "url": "{{WEB}}/research/R2.html"
+              }
+            ],
+            "uncertain_date_ids": [
+              "R6"
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "retrieval",
+          "path": "HTTP requests",
+          "required": {
+            "/research/R1.html": 200,
+            "/research/R2.html": 200,
+            "/research/R3.html": 200,
+            "/research/R4.html": 200,
+            "/research/R6.html": 200,
+            "/research/feed.html": 200
+          }
+        }
+      ]
+    }
+  }
+}

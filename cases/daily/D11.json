@@ -1,0 +1,461 @@
+{
+  "schema_version": 1,
+  "case_id": "D11",
+  "title": "Meals and shopping",
+  "provenance": {
+    "kind": "synthetic_inspired_by_firsthand_report",
+    "source_id": "S08",
+    "source_url": "https://www.reddit.com/r/ChatGPT/comments/1ma9c4n/ive_been_using_chatgpt_every_day_to_plan_my_meals/",
+    "researched_on": "2026-10-11"
+  },
+  "scope": "Supplied recipes, pantry and prices; logistics, not nutrition or checkout",
+  "variants": {
+    "normal": {
+      "files": {
+        "inputs/meal-rules.json": "{\n  \"recipes\": [\n    {\n      \"id\": \"rice-beans\",\n      \"minutes\": 20,\n      \"ingredients_per_serving\": {\n        \"rice\": 1,\n        \"beans\": 1\n      }\n    },\n    {\n      \"id\": \"pasta\",\n      \"minutes\": 15,\n      \"ingredients_per_serving\": {\n        \"pasta\": 1,\n        \"tomato\": 1\n      }\n    },\n    {\n      \"id\": \"rice-eggs\",\n      \"minutes\": 10,\n      \"ingredients_per_serving\": {\n        \"rice\": 1,\n        \"eggs\": 1\n      }\n    }\n  ],\n  \"days\": [\n    {\n      \"date\": \"2026-10-12\",\n      \"servings\": 2,\n      \"max_minutes\": 25\n    },\n    {\n      \"date\": \"2026-10-13\",\n      \"servings\": 2,\n      \"max_minutes\": 25\n    },\n    {\n      \"date\": \"2026-10-14\",\n      \"servings\": 2,\n      \"max_minutes\": 25\n    },\n    {\n      \"date\": \"2026-10-15\",\n      \"servings\": 2,\n      \"max_minutes\": 25\n    },\n    {\n      \"date\": \"2026-10-16\",\n      \"servings\": 2,\n      \"max_minutes\": 25\n    }\n  ],\n  \"pantry\": {\n    \"rice\": 4,\n    \"beans\": 2,\n    \"pasta\": 2,\n    \"tomato\": 0,\n    \"eggs\": 2\n  },\n  \"unit_prices_cents\": {\n    \"rice\": 50,\n    \"beans\": 60,\n    \"pasta\": 50,\n    \"tomato\": 40,\n    \"eggs\": 30\n  },\n  \"budget_cents\": 1200,\n  \"minimum_distinct_recipes\": 2,\n  \"leftover_lunch_dates\": [\n    \"2026-10-14\",\n    \"2026-10-16\"\n  ]\n}\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Plan five dinners and one-person leftover lunches on the two specified dates using meal-rules.json. Each dinner must serve that day's diners plus any portions reserved for a later lunch. Lunches must use a previously cooked dinner. Use at least minimum_distinct_recipes, obey daily cooking limits, subtract pantry quantities, and fit the budget. Result shape: {dinners:[{date,recipe_id,servings}], leftover_lunches:[{date,from_dinner_date,servings}], shopping:{<ingredient>:<units to buy, including zeros>}, cost_cents}. Any feasible plan is acceptable.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "meals",
+          "path": "outputs/result.json",
+          "rules": {
+            "recipes": [
+              {
+                "id": "rice-beans",
+                "minutes": 20,
+                "ingredients_per_serving": {
+                  "rice": 1,
+                  "beans": 1
+                }
+              },
+              {
+                "id": "pasta",
+                "minutes": 15,
+                "ingredients_per_serving": {
+                  "pasta": 1,
+                  "tomato": 1
+                }
+              },
+              {
+                "id": "rice-eggs",
+                "minutes": 10,
+                "ingredients_per_serving": {
+                  "rice": 1,
+                  "eggs": 1
+                }
+              }
+            ],
+            "days": [
+              {
+                "date": "2026-10-12",
+                "servings": 2,
+                "max_minutes": 25
+              },
+              {
+                "date": "2026-10-13",
+                "servings": 2,
+                "max_minutes": 25
+              },
+              {
+                "date": "2026-10-14",
+                "servings": 2,
+                "max_minutes": 25
+              },
+              {
+                "date": "2026-10-15",
+                "servings": 2,
+                "max_minutes": 25
+              },
+              {
+                "date": "2026-10-16",
+                "servings": 2,
+                "max_minutes": 25
+              }
+            ],
+            "pantry": {
+              "rice": 4,
+              "beans": 2,
+              "pasta": 2,
+              "tomato": 0,
+              "eggs": 2
+            },
+            "unit_prices_cents": {
+              "rice": 50,
+              "beans": 60,
+              "pasta": 50,
+              "tomato": 40,
+              "eggs": 30
+            },
+            "budget_cents": 1200,
+            "minimum_distinct_recipes": 2,
+            "leftover_lunch_dates": [
+              "2026-10-14",
+              "2026-10-16"
+            ]
+          }
+        }
+      ],
+      "reference_output": {
+        "dinners": [
+          {
+            "date": "2026-10-12",
+            "recipe_id": "rice-beans",
+            "servings": 2
+          },
+          {
+            "date": "2026-10-13",
+            "recipe_id": "rice-eggs",
+            "servings": 3
+          },
+          {
+            "date": "2026-10-14",
+            "recipe_id": "pasta",
+            "servings": 2
+          },
+          {
+            "date": "2026-10-15",
+            "recipe_id": "rice-eggs",
+            "servings": 3
+          },
+          {
+            "date": "2026-10-16",
+            "recipe_id": "pasta",
+            "servings": 2
+          }
+        ],
+        "leftover_lunches": [
+          {
+            "date": "2026-10-14",
+            "from_dinner_date": "2026-10-13",
+            "servings": 1
+          },
+          {
+            "date": "2026-10-16",
+            "from_dinner_date": "2026-10-15",
+            "servings": 1
+          }
+        ],
+        "shopping": {
+          "rice": 4,
+          "beans": 0,
+          "pasta": 2,
+          "tomato": 4,
+          "eggs": 4
+        },
+        "cost_cents": 580
+      }
+    },
+    "update": {
+      "files": {
+        "inputs/meal-rules.json": "{\n  \"recipes\": [\n    {\n      \"id\": \"rice-beans\",\n      \"minutes\": 20,\n      \"ingredients_per_serving\": {\n        \"rice\": 1,\n        \"beans\": 1\n      }\n    },\n    {\n      \"id\": \"pasta\",\n      \"minutes\": 15,\n      \"ingredients_per_serving\": {\n        \"pasta\": 1,\n        \"tomato\": 1\n      }\n    },\n    {\n      \"id\": \"rice-eggs\",\n      \"minutes\": 10,\n      \"ingredients_per_serving\": {\n        \"rice\": 1,\n        \"eggs\": 1\n      }\n    }\n  ],\n  \"days\": [\n    {\n      \"date\": \"2026-10-12\",\n      \"servings\": 2,\n      \"max_minutes\": 25\n    },\n    {\n      \"date\": \"2026-10-13\",\n      \"servings\": 2,\n      \"max_minutes\": 25\n    },\n    {\n      \"date\": \"2026-10-14\",\n      \"servings\": 3,\n      \"max_minutes\": 25\n    },\n    {\n      \"date\": \"2026-10-15\",\n      \"servings\": 2,\n      \"max_minutes\": 25\n    },\n    {\n      \"date\": \"2026-10-16\",\n      \"servings\": 2,\n      \"max_minutes\": 25\n    }\n  ],\n  \"pantry\": {\n    \"rice\": 4,\n    \"beans\": 2,\n    \"pasta\": 2,\n    \"tomato\": 0,\n    \"eggs\": 2\n  },\n  \"unit_prices_cents\": {\n    \"rice\": 50,\n    \"beans\": 60,\n    \"pasta\": 50,\n    \"tomato\": 40,\n    \"eggs\": 30\n  },\n  \"budget_cents\": 1200,\n  \"minimum_distinct_recipes\": 2,\n  \"leftover_lunch_dates\": [\n    \"2026-10-14\",\n    \"2026-10-16\"\n  ]\n}\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Plan five dinners and one-person leftover lunches on the two specified dates using meal-rules.json. Each dinner must serve that day's diners plus any portions reserved for a later lunch. Lunches must use a previously cooked dinner. Use at least minimum_distinct_recipes, obey daily cooking limits, subtract pantry quantities, and fit the budget. Result shape: {dinners:[{date,recipe_id,servings}], leftover_lunches:[{date,from_dinner_date,servings}], shopping:{<ingredient>:<units to buy, including zeros>}, cost_cents}. Any feasible plan is acceptable.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "meals",
+          "path": "outputs/result.json",
+          "rules": {
+            "recipes": [
+              {
+                "id": "rice-beans",
+                "minutes": 20,
+                "ingredients_per_serving": {
+                  "rice": 1,
+                  "beans": 1
+                }
+              },
+              {
+                "id": "pasta",
+                "minutes": 15,
+                "ingredients_per_serving": {
+                  "pasta": 1,
+                  "tomato": 1
+                }
+              },
+              {
+                "id": "rice-eggs",
+                "minutes": 10,
+                "ingredients_per_serving": {
+                  "rice": 1,
+                  "eggs": 1
+                }
+              }
+            ],
+            "days": [
+              {
+                "date": "2026-10-12",
+                "servings": 2,
+                "max_minutes": 25
+              },
+              {
+                "date": "2026-10-13",
+                "servings": 2,
+                "max_minutes": 25
+              },
+              {
+                "date": "2026-10-14",
+                "servings": 3,
+                "max_minutes": 25
+              },
+              {
+                "date": "2026-10-15",
+                "servings": 2,
+                "max_minutes": 25
+              },
+              {
+                "date": "2026-10-16",
+                "servings": 2,
+                "max_minutes": 25
+              }
+            ],
+            "pantry": {
+              "rice": 4,
+              "beans": 2,
+              "pasta": 2,
+              "tomato": 0,
+              "eggs": 2
+            },
+            "unit_prices_cents": {
+              "rice": 50,
+              "beans": 60,
+              "pasta": 50,
+              "tomato": 40,
+              "eggs": 30
+            },
+            "budget_cents": 1200,
+            "minimum_distinct_recipes": 2,
+            "leftover_lunch_dates": [
+              "2026-10-14",
+              "2026-10-16"
+            ]
+          }
+        }
+      ],
+      "reference_output": {
+        "dinners": [
+          {
+            "date": "2026-10-12",
+            "recipe_id": "rice-beans",
+            "servings": 2
+          },
+          {
+            "date": "2026-10-13",
+            "recipe_id": "rice-eggs",
+            "servings": 3
+          },
+          {
+            "date": "2026-10-14",
+            "recipe_id": "pasta",
+            "servings": 3
+          },
+          {
+            "date": "2026-10-15",
+            "recipe_id": "rice-eggs",
+            "servings": 3
+          },
+          {
+            "date": "2026-10-16",
+            "recipe_id": "pasta",
+            "servings": 2
+          }
+        ],
+        "leftover_lunches": [
+          {
+            "date": "2026-10-14",
+            "from_dinner_date": "2026-10-13",
+            "servings": 1
+          },
+          {
+            "date": "2026-10-16",
+            "from_dinner_date": "2026-10-15",
+            "servings": 1
+          }
+        ],
+        "shopping": {
+          "rice": 4,
+          "beans": 0,
+          "pasta": 3,
+          "tomato": 5,
+          "eggs": 4
+        },
+        "cost_cents": 670
+      }
+    },
+    "problem": {
+      "files": {
+        "inputs/meal-rules.json": "{\n  \"recipes\": [\n    {\n      \"id\": \"rice-beans\",\n      \"minutes\": 20,\n      \"ingredients_per_serving\": {\n        \"rice\": 1,\n        \"beans\": 1\n      }\n    },\n    {\n      \"id\": \"pasta\",\n      \"minutes\": 15,\n      \"ingredients_per_serving\": {\n        \"pasta\": 1,\n        \"tomato\": 1\n      }\n    },\n    {\n      \"id\": \"rice-eggs\",\n      \"minutes\": 10,\n      \"ingredients_per_serving\": {\n        \"rice\": 1,\n        \"eggs\": 1\n      }\n    }\n  ],\n  \"days\": [\n    {\n      \"date\": \"2026-10-12\",\n      \"servings\": 2,\n      \"max_minutes\": 25\n    },\n    {\n      \"date\": \"2026-10-13\",\n      \"servings\": 2,\n      \"max_minutes\": 10\n    },\n    {\n      \"date\": \"2026-10-14\",\n      \"servings\": 2,\n      \"max_minutes\": 25\n    },\n    {\n      \"date\": \"2026-10-15\",\n      \"servings\": 2,\n      \"max_minutes\": 25\n    },\n    {\n      \"date\": \"2026-10-16\",\n      \"servings\": 2,\n      \"max_minutes\": 25\n    }\n  ],\n  \"pantry\": {\n    \"rice\": 4,\n    \"beans\": 2,\n    \"pasta\": 2,\n    \"tomato\": 0,\n    \"eggs\": 2\n  },\n  \"unit_prices_cents\": {\n    \"rice\": 50,\n    \"beans\": 60,\n    \"pasta\": 50,\n    \"tomato\": 40,\n    \"eggs\": 30\n  },\n  \"budget_cents\": 1200,\n  \"minimum_distinct_recipes\": 2,\n  \"leftover_lunch_dates\": [\n    \"2026-10-14\",\n    \"2026-10-16\"\n  ]\n}\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Plan five dinners and one-person leftover lunches on the two specified dates using meal-rules.json. Each dinner must serve that day's diners plus any portions reserved for a later lunch. Lunches must use a previously cooked dinner. Use at least minimum_distinct_recipes, obey daily cooking limits, subtract pantry quantities, and fit the budget. Result shape: {dinners:[{date,recipe_id,servings}], leftover_lunches:[{date,from_dinner_date,servings}], shopping:{<ingredient>:<units to buy, including zeros>}, cost_cents}. Any feasible plan is acceptable.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "meals",
+          "path": "outputs/result.json",
+          "rules": {
+            "recipes": [
+              {
+                "id": "rice-beans",
+                "minutes": 20,
+                "ingredients_per_serving": {
+                  "rice": 1,
+                  "beans": 1
+                }
+              },
+              {
+                "id": "pasta",
+                "minutes": 15,
+                "ingredients_per_serving": {
+                  "pasta": 1,
+                  "tomato": 1
+                }
+              },
+              {
+                "id": "rice-eggs",
+                "minutes": 10,
+                "ingredients_per_serving": {
+                  "rice": 1,
+                  "eggs": 1
+                }
+              }
+            ],
+            "days": [
+              {
+                "date": "2026-10-12",
+                "servings": 2,
+                "max_minutes": 25
+              },
+              {
+                "date": "2026-10-13",
+                "servings": 2,
+                "max_minutes": 10
+              },
+              {
+                "date": "2026-10-14",
+                "servings": 2,
+                "max_minutes": 25
+              },
+              {
+                "date": "2026-10-15",
+                "servings": 2,
+                "max_minutes": 25
+              },
+              {
+                "date": "2026-10-16",
+                "servings": 2,
+                "max_minutes": 25
+              }
+            ],
+            "pantry": {
+              "rice": 4,
+              "beans": 2,
+              "pasta": 2,
+              "tomato": 0,
+              "eggs": 2
+            },
+            "unit_prices_cents": {
+              "rice": 50,
+              "beans": 60,
+              "pasta": 50,
+              "tomato": 40,
+              "eggs": 30
+            },
+            "budget_cents": 1200,
+            "minimum_distinct_recipes": 2,
+            "leftover_lunch_dates": [
+              "2026-10-14",
+              "2026-10-16"
+            ]
+          }
+        }
+      ],
+      "reference_output": {
+        "dinners": [
+          {
+            "date": "2026-10-12",
+            "recipe_id": "rice-beans",
+            "servings": 2
+          },
+          {
+            "date": "2026-10-13",
+            "recipe_id": "rice-eggs",
+            "servings": 3
+          },
+          {
+            "date": "2026-10-14",
+            "recipe_id": "pasta",
+            "servings": 2
+          },
+          {
+            "date": "2026-10-15",
+            "recipe_id": "rice-eggs",
+            "servings": 3
+          },
+          {
+            "date": "2026-10-16",
+            "recipe_id": "pasta",
+            "servings": 2
+          }
+        ],
+        "leftover_lunches": [
+          {
+            "date": "2026-10-14",
+            "from_dinner_date": "2026-10-13",
+            "servings": 1
+          },
+          {
+            "date": "2026-10-16",
+            "from_dinner_date": "2026-10-15",
+            "servings": 1
+          }
+        ],
+        "shopping": {
+          "rice": 4,
+          "beans": 0,
+          "pasta": 2,
+          "tomato": 4,
+          "eggs": 4
+        },
+        "cost_cents": 580
+      }
+    }
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "case_id": "D06",
+  "title": "Meeting invitation changes",
+  "provenance": {
+    "kind": "synthetic_inspired_by_firsthand_report",
+    "source_id": "S03",
+    "source_url": "https://kennytrinh.com/blog/from-chatbot-to-co-worker",
+    "researched_on": "2026-10-11"
+  },
+  "scope": "Exported messages and local event records; no inbox/calendar integration",
+  "variants": {
+    "normal": {
+      "files": {
+        "inputs/messages.json": "[\n  {\n    \"message_id\": \"M1\",\n    \"event_id\": \"E1\",\n    \"sequence\": 1,\n    \"action\": \"invite\",\n    \"start\": \"2026-10-12T10:00:00+01:00\",\n    \"duration_minutes\": 30\n  },\n  {\n    \"message_id\": \"M2\",\n    \"event_id\": \"E2\",\n    \"sequence\": 1,\n    \"action\": \"invite\",\n    \"start\": \"2026-10-12T11:00:00+01:00\",\n    \"duration_minutes\": 45\n  },\n  {\n    \"message_id\": \"M3\",\n    \"event_id\": \"E1\",\n    \"sequence\": 2,\n    \"action\": \"update\",\n    \"start\": \"2026-10-12T12:00:00+01:00\",\n    \"duration_minutes\": 30\n  },\n  {\n    \"message_id\": \"M4\",\n    \"event_id\": \"E2\",\n    \"sequence\": 2,\n    \"action\": \"cancel\"\n  }\n]\n",
+        "inputs/initial-events.json": "[]\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Reconcile inputs/messages.json against initial-events.json. event_id and sequence determine which update is current, not arrival order. Deduplicate repeated messages. Keep unknown starts for review. The result has events:[{id,start,duration_minutes}], cancelled_ids, needs_review_ids. Explain the changes in your report.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "events": [
+              {
+                "id": "E1",
+                "start": "2026-10-12T12:00:00+01:00",
+                "duration_minutes": 30
+              }
+            ],
+            "cancelled_ids": [
+              "E2"
+            ],
+            "needs_review_ids": []
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        }
+      ]
+    },
+    "update": {
+      "files": {
+        "inputs/messages.json": "[\n  {\n    \"message_id\": \"M1\",\n    \"event_id\": \"E1\",\n    \"sequence\": 1,\n    \"action\": \"invite\",\n    \"start\": \"2026-10-12T10:00:00+01:00\",\n    \"duration_minutes\": 30\n  },\n  {\n    \"message_id\": \"M2\",\n    \"event_id\": \"E2\",\n    \"sequence\": 1,\n    \"action\": \"invite\",\n    \"start\": \"2026-10-12T11:00:00+01:00\",\n    \"duration_minutes\": 45\n  },\n  {\n    \"message_id\": \"M3\",\n    \"event_id\": \"E1\",\n    \"sequence\": 2,\n    \"action\": \"update\",\n    \"start\": \"2026-10-12T12:00:00+01:00\",\n    \"duration_minutes\": 30\n  },\n  {\n    \"message_id\": \"M4\",\n    \"event_id\": \"E2\",\n    \"sequence\": 2,\n    \"action\": \"cancel\"\n  },\n  {\n    \"message_id\": \"M5\",\n    \"event_id\": \"E1\",\n    \"sequence\": 3,\n    \"action\": \"update\",\n    \"start\": \"2026-10-12T14:00:00+01:00\",\n    \"duration_minutes\": 60\n  }\n]\n",
+        "inputs/initial-events.json": "[]\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Reconcile inputs/messages.json against initial-events.json. event_id and sequence determine which update is current, not arrival order. Deduplicate repeated messages. Keep unknown starts for review. The result has events:[{id,start,duration_minutes}], cancelled_ids, needs_review_ids. Explain the changes in your report.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "events": [
+              {
+                "id": "E1",
+                "start": "2026-10-12T14:00:00+01:00",
+                "duration_minutes": 60
+              }
+            ],
+            "cancelled_ids": [
+              "E2"
+            ],
+            "needs_review_ids": []
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        }
+      ]
+    },
+    "problem": {
+      "files": {
+        "inputs/messages.json": "[\n  {\n    \"message_id\": \"M1\",\n    \"event_id\": \"E1\",\n    \"sequence\": 1,\n    \"action\": \"invite\",\n    \"start\": \"2026-10-12T10:00:00+01:00\",\n    \"duration_minutes\": 30\n  },\n  {\n    \"message_id\": \"M2\",\n    \"event_id\": \"E2\",\n    \"sequence\": 1,\n    \"action\": \"invite\",\n    \"start\": \"2026-10-12T11:00:00+01:00\",\n    \"duration_minutes\": 45\n  },\n  {\n    \"message_id\": \"M3\",\n    \"event_id\": \"E1\",\n    \"sequence\": 2,\n    \"action\": \"update\",\n    \"start\": \"2026-10-12T12:00:00+01:00\",\n    \"duration_minutes\": 30\n  },\n  {\n    \"message_id\": \"M4\",\n    \"event_id\": \"E2\",\n    \"sequence\": 2,\n    \"action\": \"cancel\"\n  },\n  {\n    \"message_id\": \"M1\",\n    \"event_id\": \"E1\",\n    \"sequence\": 1,\n    \"action\": \"invite\",\n    \"start\": \"2026-10-12T10:00:00+01:00\",\n    \"duration_minutes\": 30\n  },\n  {\n    \"message_id\": \"M3\",\n    \"event_id\": \"E1\",\n    \"sequence\": 2,\n    \"action\": \"update\",\n    \"start\": \"2026-10-12T12:00:00+01:00\",\n    \"duration_minutes\": 30\n  },\n  {\n    \"message_id\": \"M6\",\n    \"event_id\": \"E3\",\n    \"sequence\": 1,\n    \"action\": \"invite\",\n    \"start\": \"TBD\",\n    \"duration_minutes\": 30\n  }\n]\n",
+        "inputs/initial-events.json": "[]\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Reconcile inputs/messages.json against initial-events.json. event_id and sequence determine which update is current, not arrival order. Deduplicate repeated messages. Keep unknown starts for review. The result has events:[{id,start,duration_minutes}], cancelled_ids, needs_review_ids. Explain the changes in your report.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "events": [
+              {
+                "id": "E1",
+                "start": "2026-10-12T12:00:00+01:00",
+                "duration_minutes": 30
+              }
+            ],
+            "cancelled_ids": [
+              "E2"
+            ],
+            "needs_review_ids": [
+              "E3"
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        }
+      ]
+    }
+  }
+}

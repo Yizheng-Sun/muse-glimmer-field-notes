@@ -1,0 +1,310 @@
+{
+  "schema_version": 1,
+  "case_id": "D14",
+  "title": "Feasible trip itinerary",
+  "provenance": {
+    "kind": "synthetic_inspired_by_firsthand_report",
+    "source_id": "S09",
+    "source_url": "https://daveswift.com/hermes-road-trip/",
+    "researched_on": "2026-10-11"
+  },
+  "scope": "Supplied travel times and opening hours; no live availability or booking",
+  "variants": {
+    "normal": {
+      "files": {
+        "inputs/trip.json": "{\n  \"date\": \"2026-10-13\",\n  \"departure\": \"09:00\",\n  \"hotel_return_by\": \"15:00\",\n  \"max_drive_minutes\": 90,\n  \"attractions\": [\n    {\n      \"id\": \"museum\",\n      \"open\": \"10:00\",\n      \"close\": \"17:00\",\n      \"minutes\": 60\n    },\n    {\n      \"id\": \"garden\",\n      \"open\": \"09:00\",\n      \"close\": \"16:00\",\n      \"minutes\": 45\n    },\n    {\n      \"id\": \"gallery\",\n      \"open\": \"10:00\",\n      \"close\": \"17:00\",\n      \"minutes\": 45\n    }\n  ],\n  \"required_ids\": [\n    \"museum\",\n    \"garden\"\n  ],\n  \"unavailable_ids\": [],\n  \"travel_minutes\": {\n    \"hotel\": {\n      \"museum\": 30,\n      \"garden\": 20,\n      \"gallery\": 20\n    },\n    \"museum\": {\n      \"hotel\": 30,\n      \"garden\": 20,\n      \"gallery\": 20\n    },\n    \"garden\": {\n      \"hotel\": 20,\n      \"museum\": 20,\n      \"gallery\": 15\n    },\n    \"gallery\": {\n      \"hotel\": 20,\n      \"museum\": 20,\n      \"garden\": 15\n    }\n  },\n  \"fixed_reservation\": {\n    \"id\": \"museum\",\n    \"arrival\": \"10:00\"\n  }\n}\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Plan a feasible day using trip.json, visiting every required attraction once, preserving the museum reservation. Account for travel from the hotel and back, opening hours, activity durations, driving limits and hotel return time. Result shape: {date,stops:[{id,arrival:<HH:MM>,departure:<HH:MM>}],hotel_return:<HH:MM>}. Stops must be in chronological order. Any feasible itinerary is acceptable.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "itinerary",
+          "path": "outputs/result.json",
+          "rules": {
+            "date": "2026-10-13",
+            "departure": "09:00",
+            "hotel_return_by": "15:00",
+            "max_drive_minutes": 90,
+            "attractions": [
+              {
+                "id": "museum",
+                "open": "10:00",
+                "close": "17:00",
+                "minutes": 60
+              },
+              {
+                "id": "garden",
+                "open": "09:00",
+                "close": "16:00",
+                "minutes": 45
+              },
+              {
+                "id": "gallery",
+                "open": "10:00",
+                "close": "17:00",
+                "minutes": 45
+              }
+            ],
+            "required_ids": [
+              "museum",
+              "garden"
+            ],
+            "unavailable_ids": [],
+            "travel_minutes": {
+              "hotel": {
+                "museum": 30,
+                "garden": 20,
+                "gallery": 20
+              },
+              "museum": {
+                "hotel": 30,
+                "garden": 20,
+                "gallery": 20
+              },
+              "garden": {
+                "hotel": 20,
+                "museum": 20,
+                "gallery": 15
+              },
+              "gallery": {
+                "hotel": 20,
+                "museum": 20,
+                "garden": 15
+              }
+            },
+            "fixed_reservation": {
+              "id": "museum",
+              "arrival": "10:00"
+            }
+          }
+        }
+      ],
+      "reference_output": {
+        "date": "2026-10-13",
+        "stops": [
+          {
+            "id": "museum",
+            "arrival": "10:00",
+            "departure": "11:00"
+          },
+          {
+            "id": "garden",
+            "arrival": "11:20",
+            "departure": "12:05"
+          }
+        ],
+        "hotel_return": "12:25"
+      }
+    },
+    "update": {
+      "files": {
+        "inputs/trip.json": "{\n  \"date\": \"2026-10-13\",\n  \"departure\": \"09:00\",\n  \"hotel_return_by\": \"15:00\",\n  \"max_drive_minutes\": 90,\n  \"attractions\": [\n    {\n      \"id\": \"museum\",\n      \"open\": \"10:00\",\n      \"close\": \"17:00\",\n      \"minutes\": 60\n    },\n    {\n      \"id\": \"garden\",\n      \"open\": \"09:00\",\n      \"close\": \"16:00\",\n      \"minutes\": 45\n    },\n    {\n      \"id\": \"gallery\",\n      \"open\": \"10:00\",\n      \"close\": \"17:00\",\n      \"minutes\": 45\n    }\n  ],\n  \"required_ids\": [\n    \"museum\",\n    \"gallery\"\n  ],\n  \"unavailable_ids\": [\n    \"garden\"\n  ],\n  \"travel_minutes\": {\n    \"hotel\": {\n      \"museum\": 30,\n      \"garden\": 20,\n      \"gallery\": 20\n    },\n    \"museum\": {\n      \"hotel\": 30,\n      \"garden\": 20,\n      \"gallery\": 20\n    },\n    \"garden\": {\n      \"hotel\": 20,\n      \"museum\": 20,\n      \"gallery\": 15\n    },\n    \"gallery\": {\n      \"hotel\": 20,\n      \"museum\": 20,\n      \"garden\": 15\n    }\n  },\n  \"fixed_reservation\": {\n    \"id\": \"museum\",\n    \"arrival\": \"10:00\"\n  }\n}\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Plan a feasible day using trip.json, visiting every required attraction once, preserving the museum reservation. Account for travel from the hotel and back, opening hours, activity durations, driving limits and hotel return time. Result shape: {date,stops:[{id,arrival:<HH:MM>,departure:<HH:MM>}],hotel_return:<HH:MM>}. Stops must be in chronological order. Any feasible itinerary is acceptable.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "itinerary",
+          "path": "outputs/result.json",
+          "rules": {
+            "date": "2026-10-13",
+            "departure": "09:00",
+            "hotel_return_by": "15:00",
+            "max_drive_minutes": 90,
+            "attractions": [
+              {
+                "id": "museum",
+                "open": "10:00",
+                "close": "17:00",
+                "minutes": 60
+              },
+              {
+                "id": "garden",
+                "open": "09:00",
+                "close": "16:00",
+                "minutes": 45
+              },
+              {
+                "id": "gallery",
+                "open": "10:00",
+                "close": "17:00",
+                "minutes": 45
+              }
+            ],
+            "required_ids": [
+              "museum",
+              "gallery"
+            ],
+            "unavailable_ids": [
+              "garden"
+            ],
+            "travel_minutes": {
+              "hotel": {
+                "museum": 30,
+                "garden": 20,
+                "gallery": 20
+              },
+              "museum": {
+                "hotel": 30,
+                "garden": 20,
+                "gallery": 20
+              },
+              "garden": {
+                "hotel": 20,
+                "museum": 20,
+                "gallery": 15
+              },
+              "gallery": {
+                "hotel": 20,
+                "museum": 20,
+                "garden": 15
+              }
+            },
+            "fixed_reservation": {
+              "id": "museum",
+              "arrival": "10:00"
+            }
+          }
+        }
+      ],
+      "reference_output": {
+        "date": "2026-10-13",
+        "stops": [
+          {
+            "id": "museum",
+            "arrival": "10:00",
+            "departure": "11:00"
+          },
+          {
+            "id": "gallery",
+            "arrival": "11:20",
+            "departure": "12:05"
+          }
+        ],
+        "hotel_return": "12:25"
+      }
+    },
+    "problem": {
+      "files": {
+        "inputs/trip.json": "{\n  \"date\": \"2026-10-13\",\n  \"departure\": \"08:30\",\n  \"hotel_return_by\": \"15:00\",\n  \"max_drive_minutes\": 90,\n  \"attractions\": [\n    {\n      \"id\": \"museum\",\n      \"open\": \"10:00\",\n      \"close\": \"17:00\",\n      \"minutes\": 60\n    },\n    {\n      \"id\": \"garden\",\n      \"open\": \"09:00\",\n      \"close\": \"12:00\",\n      \"minutes\": 30\n    },\n    {\n      \"id\": \"gallery\",\n      \"open\": \"10:00\",\n      \"close\": \"17:00\",\n      \"minutes\": 45\n    }\n  ],\n  \"required_ids\": [\n    \"museum\",\n    \"garden\"\n  ],\n  \"unavailable_ids\": [],\n  \"travel_minutes\": {\n    \"hotel\": {\n      \"museum\": 30,\n      \"garden\": 20,\n      \"gallery\": 20\n    },\n    \"museum\": {\n      \"hotel\": 30,\n      \"garden\": 20,\n      \"gallery\": 20\n    },\n    \"garden\": {\n      \"hotel\": 20,\n      \"museum\": 20,\n      \"gallery\": 15\n    },\n    \"gallery\": {\n      \"hotel\": 20,\n      \"museum\": 20,\n      \"garden\": 15\n    }\n  },\n  \"fixed_reservation\": {\n    \"id\": \"museum\",\n    \"arrival\": \"10:00\"\n  }\n}\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Plan a feasible day using trip.json, visiting every required attraction once, preserving the museum reservation. Account for travel from the hotel and back, opening hours, activity durations, driving limits and hotel return time. Result shape: {date,stops:[{id,arrival:<HH:MM>,departure:<HH:MM>}],hotel_return:<HH:MM>}. Stops must be in chronological order. Any feasible itinerary is acceptable.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "itinerary",
+          "path": "outputs/result.json",
+          "rules": {
+            "date": "2026-10-13",
+            "departure": "08:30",
+            "hotel_return_by": "15:00",
+            "max_drive_minutes": 90,
+            "attractions": [
+              {
+                "id": "museum",
+                "open": "10:00",
+                "close": "17:00",
+                "minutes": 60
+              },
+              {
+                "id": "garden",
+                "open": "09:00",
+                "close": "12:00",
+                "minutes": 30
+              },
+              {
+                "id": "gallery",
+                "open": "10:00",
+                "close": "17:00",
+                "minutes": 45
+              }
+            ],
+            "required_ids": [
+              "museum",
+              "garden"
+            ],
+            "unavailable_ids": [],
+            "travel_minutes": {
+              "hotel": {
+                "museum": 30,
+                "garden": 20,
+                "gallery": 20
+              },
+              "museum": {
+                "hotel": 30,
+                "garden": 20,
+                "gallery": 20
+              },
+              "garden": {
+                "hotel": 20,
+                "museum": 20,
+                "gallery": 15
+              },
+              "gallery": {
+                "hotel": 20,
+                "museum": 20,
+                "garden": 15
+              }
+            },
+            "fixed_reservation": {
+              "id": "museum",
+              "arrival": "10:00"
+            }
+          }
+        }
+      ],
+      "reference_output": {
+        "date": "2026-10-13",
+        "stops": [
+          {
+            "id": "garden",
+            "arrival": "09:00",
+            "departure": "09:30"
+          },
+          {
+            "id": "museum",
+            "arrival": "10:00",
+            "departure": "11:00"
+          }
+        ],
+        "hotel_return": "11:30"
+      }
+    }
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "case_id": "D05",
+  "title": "Blog drafting and revision",
+  "provenance": {
+    "kind": "synthetic_inspired_by_firsthand_report",
+    "source_id": "S02",
+    "source_url": "https://guochengqian.github.io/blog/hermes-agent/",
+    "researched_on": "2026-10-11"
+  },
+  "scope": "Fact preservation and explicit edits; writing quality needs human review",
+  "variants": {
+    "normal": {
+      "files": {
+        "inputs/notes.md": "Experiment A: 8 successes out of 16 attempts. Elapsed time 45 seconds. This is one synthetic experiment, not proof of universal reliability. Source: trial-A.\n",
+        "inputs/editor.md": "Use the title 'A useful local workflow'. Remove the unsupported sentence 'It never makes mistakes'. Preserve the counts and elapsed time. Add a section headed 'Limitations'."
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Draft outputs/draft.md from inputs/notes.md. Preserve the experiment facts and qualification. Save at least 120 characters. Editorial feedback will arrive in a later session.",
+          "remove_before": [],
+          "provide_before": []
+        },
+        {
+          "prompt": "Revise the saved outputs/draft.md using every instruction in inputs/editor.md. The structured result fields are trial_id, successes, attempts, elapsed_seconds, unsupported_claim_removed. Do not add results from outside the notes.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": [
+            "inputs/editor.md"
+          ]
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "trial_id": "trial-A",
+            "successes": 8,
+            "attempts": 16,
+            "elapsed_seconds": 45,
+            "unsupported_claim_removed": true
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "text",
+          "path": "outputs/draft.md",
+          "min_chars": 120,
+          "phase": 1
+        },
+        {
+          "kind": "text",
+          "path": "outputs/draft.md",
+          "min_chars": 120,
+          "contains": [
+            "A useful local workflow",
+            "Limitations",
+            "8",
+            "16",
+            "45"
+          ],
+          "absent": [
+            "It never makes mistakes",
+            "99"
+          ]
+        }
+      ]
+    },
+    "update": {
+      "files": {
+        "inputs/notes.md": "Experiment A: 12 successes out of 16 attempts. Elapsed time 45 seconds. This is one synthetic experiment, not proof of universal reliability. Source: trial-A.\n",
+        "inputs/editor.md": "Use the title 'A useful local workflow'. Remove the unsupported sentence 'It never makes mistakes'. Preserve the counts and elapsed time. Add a section headed 'Limitations'."
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Draft outputs/draft.md from inputs/notes.md. Preserve the experiment facts and qualification. Save at least 120 characters. Editorial feedback will arrive in a later session.",
+          "remove_before": [],
+          "provide_before": []
+        },
+        {
+          "prompt": "Revise the saved outputs/draft.md using every instruction in inputs/editor.md. The structured result fields are trial_id, successes, attempts, elapsed_seconds, unsupported_claim_removed. Do not add results from outside the notes.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": [
+            "inputs/editor.md"
+          ]
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "trial_id": "trial-A",
+            "successes": 12,
+            "attempts": 16,
+            "elapsed_seconds": 45,
+            "unsupported_claim_removed": true
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "text",
+          "path": "outputs/draft.md",
+          "min_chars": 120,
+          "phase": 1
+        },
+        {
+          "kind": "text",
+          "path": "outputs/draft.md",
+          "min_chars": 120,
+          "contains": [
+            "A useful local workflow",
+            "Limitations",
+            "12",
+            "16",
+            "45"
+          ],
+          "absent": [
+            "It never makes mistakes",
+            "99"
+          ]
+        }
+      ]
+    },
+    "problem": {
+      "files": {
+        "inputs/notes.md": "Experiment A: 8 successes out of 16 attempts. Elapsed time 45 seconds. This is one synthetic experiment, not proof of universal reliability. Source: trial-A.\nAn earlier scratch note says 99 successes; this was corrected and must not be used.",
+        "inputs/editor.md": "Use the title 'A useful local workflow'. Remove the unsupported sentence 'It never makes mistakes'. Preserve the counts and elapsed time. Add a section headed 'Limitations'."
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Draft outputs/draft.md from inputs/notes.md. Preserve the experiment facts and qualification. Save at least 120 characters. Editorial feedback will arrive in a later session.",
+          "remove_before": [],
+          "provide_before": []
+        },
+        {
+          "prompt": "Revise the saved outputs/draft.md using every instruction in inputs/editor.md. The structured result fields are trial_id, successes, attempts, elapsed_seconds, unsupported_claim_removed. Do not add results from outside the notes.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": [
+            "inputs/editor.md"
+          ]
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "trial_id": "trial-A",
+            "successes": 8,
+            "attempts": 16,
+            "elapsed_seconds": 45,
+            "unsupported_claim_removed": true
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "text",
+          "path": "outputs/draft.md",
+          "min_chars": 120,
+          "phase": 1
+        },
+        {
+          "kind": "text",
+          "path": "outputs/draft.md",
+          "min_chars": 120,
+          "contains": [
+            "A useful local workflow",
+            "Limitations",
+            "8",
+            "16",
+            "45"
+          ],
+          "absent": [
+            "It never makes mistakes",
+            "99"
+          ]
+        }
+      ]
+    }
+  }
+}

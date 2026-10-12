@@ -1,6 +1,6 @@
 # Living With Muse Glimmer
 
-One repository for preparing and recording a week of Muse Glimmer experiments. **Muse Glimmer and Hermes are already set up. Four coding cases are prepared and verified on this Mac.** First autonomous results on the 5090: C01 failed acceptance; C02 passed. C03 and C04 remain to run.
+One repository for preparing and recording a week of Muse Glimmer experiments. **Muse Glimmer and Hermes are already set up. All four coding cases have completed the 48-run evaluation on the 5090: 16 PASS and 32 FAIL.** See the [11 October evaluation report](results/evaluation-report-2026-10-11.md) for all outcomes and metrics. Earlier individual C01/C02 results are preserved in [recorded coding results](results/coding-results.md).
 
 Private GitHub repository: [Yizheng-Sun/muse-glimmer-field-notes](https://github.com/Yizheng-Sun/muse-glimmer-field-notes).
 
@@ -21,6 +21,31 @@ The launcher finds Python 3.12+, asks privately for the server key if it is not 
 ```sh
 bash scripts/run_evaluation.sh --dry-run
 ```
+
+## Automated daily-task experiments
+
+[The daily-task suite](cases/daily/README.md) implements 15 tasks inspired by [firsthand user reports](results/daily-task-research-2026-10-11.md), with 45 synthetic fixtures and independent artifact checks. The default batch runs article capture, invitation changes, evening handover, and receipt reports across three variants and two repeats: 24 attempts. These cases are ready to run; no Glimmer daily-task results are recorded yet.
+
+```bash
+bash scripts/run_daily_evaluation.sh --dry-run
+bash scripts/run_daily_evaluation.sh
+```
+
+Add `--all` to run all 90 attempts, or `--cases D12 --variants normal --repeats 1` for one attempt. The launcher uses the existing Hermes/local-model setup and privately requests the server key when needed. [The daily evaluation guide](docs/DAILY_EVALUATION.md) explains configuration, frozen fixtures, fresh sessions, CSV/JSONL/Markdown reports, and resume. Structured correctness is automatically graded; prose quality and live integrations need separate review.
+
+## Claude Haiku comparison on this Mac
+
+**The completed Haiku 5.5 batch passed all 48 acceptance checks and all 48 focused upstream selections.** The [Haiku performance report](results/haiku-evaluation-report-2026-10-11.md) confirms the exact model ID and analyzes efficiency, agent behavior and the comparison with Glimmer.
+
+The [comparison report](results/glimmer-vs-haiku-2026-10-11.md) examines why Glimmer struggled to retain fixes, audits editable upstream tests, and records the Haiku API-cost estimate and billing limitations.
+
+[The Haiku evaluation guide](docs/HAIKU_EVALUATION.md) runs `claude-haiku-5-5` through the same Hermes harness using Anthropic's API. It preserves C01–C04, all 48 budget/effort conditions, and fingerprints of the original case prompts, source trees, and acceptance checks. With Hermes and Python 3.12+ installed, start from this checkout:
+
+```bash
+bash scripts/run_haiku_evaluation.sh
+```
+
+The launcher asks privately for `ANTHROPIC_API_KEY` if it is not exported. A GPU is unnecessary. Results go to `.runs/evaluation-haiku/<timestamp>/`; follow `.runs/haiku-evaluation-launch.log`. Add `--dry-run` to preview without API calls, or `--cases C02 --efforts low --budgets small` for one API smoke test. The Mac/runtime differences are recorded for comparing results with the 5090 batch.
 
 ## What belongs in Git
 

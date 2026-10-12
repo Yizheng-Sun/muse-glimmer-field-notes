@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "case_id": "D07",
+  "title": "Training review material",
+  "provenance": {
+    "kind": "synthetic_inspired_by_firsthand_report",
+    "source_id": "S03",
+    "source_url": "https://kennytrinh.com/blog/from-chatbot-to-co-worker",
+    "researched_on": "2026-10-11"
+  },
+  "scope": "Timestamped supplied transcript; no speech recognition",
+  "variants": {
+    "normal": {
+      "files": {
+        "inputs/transcript.txt": "00:00 [P1] Topic: Seed storage. Label each packet with its harvest year.\n05:00 [P2] Topic: Sowing. Place one seed in each pot.\n10:00 [P3] Topic: Sowing continued. Check the pots after 10 days.\n15:00 [P4] Topic: Record keeping. Log the germination date.\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Turn the supplied transcript into outputs/study-notes.md. Group continued sections with their topic. The JSON result has topics:[{id,paragraphs,timestamp}] with topic IDs storage, sowing, records, check_after_days, and uncertain_paragraphs. Do not silently repair inaudible text.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "topics": [
+              {
+                "id": "storage",
+                "paragraphs": [
+                  "P1"
+                ],
+                "timestamp": "00:00"
+              },
+              {
+                "id": "sowing",
+                "paragraphs": [
+                  "P2",
+                  "P3"
+                ],
+                "timestamp": "05:00"
+              },
+              {
+                "id": "records",
+                "paragraphs": [
+                  "P4"
+                ],
+                "timestamp": "15:00"
+              }
+            ],
+            "check_after_days": 10,
+            "uncertain_paragraphs": []
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "text",
+          "path": "outputs/study-notes.md",
+          "min_chars": 120,
+          "contains": [
+            "00:00",
+            "05:00",
+            "15:00"
+          ]
+        }
+      ]
+    },
+    "update": {
+      "files": {
+        "inputs/transcript.txt": "00:00 [P1] Topic: Seed storage. Label each packet with its harvest year.\n05:00 [P2] Topic: Sowing. Place one seed in each pot.\n10:00 [P3] Topic: Sowing continued. Check the pots after 15 days.\n15:00 [P4] Topic: Record keeping. Log the germination date.\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Turn the supplied transcript into outputs/study-notes.md. Group continued sections with their topic. The JSON result has topics:[{id,paragraphs,timestamp}] with topic IDs storage, sowing, records, check_after_days, and uncertain_paragraphs. Do not silently repair inaudible text.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "topics": [
+              {
+                "id": "storage",
+                "paragraphs": [
+                  "P1"
+                ],
+                "timestamp": "00:00"
+              },
+              {
+                "id": "sowing",
+                "paragraphs": [
+                  "P2",
+                  "P3"
+                ],
+                "timestamp": "05:00"
+              },
+              {
+                "id": "records",
+                "paragraphs": [
+                  "P4"
+                ],
+                "timestamp": "15:00"
+              }
+            ],
+            "check_after_days": 15,
+            "uncertain_paragraphs": []
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "text",
+          "path": "outputs/study-notes.md",
+          "min_chars": 120,
+          "contains": [
+            "00:00",
+            "05:00",
+            "15:00"
+          ]
+        }
+      ]
+    },
+    "problem": {
+      "files": {
+        "inputs/transcript.txt": "00:00 [P1] Topic: Seed storage. Label each packet with its harvest year.\n05:00 [P2] Topic: Sowing. Place one seed in each pot.\n10:00 [P3] Topic: Sowing continued. Check the pots after 10 days.\n15:00 [P4] Topic: Record keeping. Log the germination date.\n20:00 [P5] Storage temperature: [inaudible]. Do not reconstruct the missing value.\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Turn the supplied transcript into outputs/study-notes.md. Group continued sections with their topic. The JSON result has topics:[{id,paragraphs,timestamp}] with topic IDs storage, sowing, records, check_after_days, and uncertain_paragraphs. Do not silently repair inaudible text.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "topics": [
+              {
+                "id": "storage",
+                "paragraphs": [
+                  "P1"
+                ],
+                "timestamp": "00:00"
+              },
+              {
+                "id": "sowing",
+                "paragraphs": [
+                  "P2",
+                  "P3"
+                ],
+                "timestamp": "05:00"
+              },
+              {
+                "id": "records",
+                "paragraphs": [
+                  "P4"
+                ],
+                "timestamp": "15:00"
+              }
+            ],
+            "check_after_days": 10,
+            "uncertain_paragraphs": [
+              "P5"
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "text",
+          "path": "outputs/study-notes.md",
+          "min_chars": 120,
+          "contains": [
+            "00:00",
+            "05:00",
+            "15:00"
+          ]
+        }
+      ]
+    }
+  }
+}

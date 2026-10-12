@@ -1,0 +1,78 @@
+{
+  "cases": [
+    "C01",
+    "C02",
+    "C03",
+    "C04"
+  ],
+  "reasoning_efforts": [
+    "low",
+    "medium",
+    "high",
+    "xhigh"
+  ],
+  "budgets": [
+    {
+      "name": "small",
+      "max_turns": 15,
+      "max_seconds": 300
+    },
+    {
+      "name": "medium",
+      "max_turns": 30,
+      "max_seconds": 600
+    },
+    {
+      "name": "large",
+      "max_turns": 60,
+      "max_seconds": 1200
+    }
+  ],
+  "repeats": 1,
+  "shuffle_seed": 42,
+  "base_url": "https://api.anthropic.com",
+  "model": "claude-haiku-5-5",
+  "context_length": 131072,
+  "sampling": {},
+  "api_key_env": "ANTHROPIC_API_KEY",
+  "hermes_command": [
+    "hermes"
+  ],
+  "pytest_version": "9.0.2",
+  "flit_core_version": "3.12.0",
+  "upstream_checks": true,
+  "check_timeout_seconds": 120,
+  "provider": "anthropic",
+  "input_fingerprints": {
+    "C01": {
+      "prompt_sha256": "4c5685c88ebaeaffee8c81edc55755e1101d67ac281eed5847b371a96f35a579",
+      "check_sha256": "bc6f33642d8776a8229851bb34f75f0204e93e11db464cdbb46300265013ac0a",
+      "case_sha256": "2d46c6eaf7a5ee0651c4479d0d927100f88c619bf75c2ae91b97b2bd359730fd",
+      "base_tree_sha256": "8615ff8efb5b25384d567604cce99459f6c5c5a989ee257e1ac1964491ce7f86",
+      "base_commit": "bb695aaecdef95832d167fc1d508921745aa824e"
+    },
+    "C02": {
+      "prompt_sha256": "aebd503d2ff43c6d0606c776c0c90afdcaf61928ed58699de2a6034bd1ca5ba7",
+      "check_sha256": "16459662df585fd24235185a1906d1368e7ba630b8e89ae07c25417b1d6b5779",
+      "case_sha256": "f794087341597c6853567cbc327215ab3e8b47b3006b1f5e41297142cf3cd7a8",
+      "base_tree_sha256": "208185f132e65c84fbe84223a272d0ca0dda7f933597140af44290fee7b1f0bc",
+      "base_commit": "d036881798e34289a49b18a5c550c7cf687e5a7a"
+    },
+    "C03": {
+      "prompt_sha256": "bcdb65378b6594b289f40d882117bda6eb742b9d131bbcf1f49e7604b6f99ce7",
+      "check_sha256": "9f86e5f03386b64c7411fcbf81d62d4f740c8d46f596de271f3ab48e5f1aba56",
+      "case_sha256": "24140847db31635382a6945905536ffbc5d2cd3556d3f448afbceeccb0bae71d",
+      "base_tree_sha256": "5ed2c2f8bf4c6bdb462ee9555745e099a8c1fb85d02edd6a6b34eaed72999e66",
+      "base_commit": "23669b1b69fb5fffbc773a68fc099166fc847356"
+    },
+    "C04": {
+      "prompt_sha256": "469a92ce8932155996bc4f38425d04eee7ad6750654eedeb8a8d27bb79dc7fb4",
+      "check_sha256": "9751125ae019ed3ca699a681e45c2666837b6b465c00086636298f86d71b83e7",
+      "case_sha256": "12d1b6404a5c8c9c39e755e4220f17f84aa2179c091156a5f1ee7d8c31bf4513",
+      "base_tree_sha256": "c7836981d80d3f64ffb1c23d3b39115a1c05b33c91e0370054bff82fceb4f447",
+      "base_commit": "1f334c04c6918789974207733f194e11a47698f5"
+    }
+  },
+  "anthropic_sdk_version": "0.87.0",
+  "docstring_parser_version": "0.18.0"
+}

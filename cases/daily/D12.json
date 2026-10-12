@@ -1,0 +1,221 @@
+{
+  "schema_version": 1,
+  "case_id": "D12",
+  "title": "Receipt expense report",
+  "provenance": {
+    "kind": "synthetic_inspired_by_firsthand_report",
+    "source_id": "S06",
+    "source_url": "https://www.reddit.com/r/ClaudeAI/comments/1rn9ojd/what_are_your_best_cowork_examples_use_cases/",
+    "researched_on": "2026-10-11"
+  },
+  "scope": "Supplied receipt text; no image OCR, PDF extraction or accounting advice",
+  "variants": {
+    "normal": {
+      "files": {
+        "inputs/receipts/R1.txt": "Receipt ID: R1\nDate: 2026-10-12\nMerchant: Stationery\nCurrency: GBP\nAmount in cents: 1250\n",
+        "inputs/receipts/R2.txt": "Receipt ID: R2\nDate: 2026-10-13\nMerchant: Rail\nCurrency: GBP\nAmount in cents: 2400\n",
+        "inputs/receipts/R3.txt": "Receipt ID: R3\nDate: 2026-10-14\nMerchant: Cafe\nCurrency: EUR\nAmount in cents: 800\n",
+        "inputs/receipts/R4.txt": "Receipt ID: R4\nDate: 2026-10-09\nMerchant: Stationery\nCurrency: GBP\nAmount in cents: 500\n",
+        "inputs/receipts/duplicate-R2.txt": "Receipt ID: R2\nDate: 2026-10-13\nMerchant: Rail\nCurrency: GBP\nAmount in cents: 2400\n",
+        "inputs/policy.md": "Report period: 2026-10-12 through 2026-10-16 inclusive. Stationery => supplies; Rail/Rail refund => travel; Cafe => meals. Separate currencies."
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Read every receipt and the policy. Produce an auditable expense report. Result shape: {receipts:[{id,date,category,currency,amount_cents}], totals_cents:{GBP:<number>,EUR:<number>}, excluded_ids, review_ids}. Deduplicate receipt IDs, exclude dates outside the period, preserve refunds, and flag unreadable amounts. Known totals exclude unknown amounts; state that limitation in the report.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "receipts": [
+              {
+                "id": "R1",
+                "date": "2026-10-12",
+                "category": "supplies",
+                "currency": "GBP",
+                "amount_cents": 1250
+              },
+              {
+                "id": "R2",
+                "date": "2026-10-13",
+                "category": "travel",
+                "currency": "GBP",
+                "amount_cents": 2400
+              },
+              {
+                "id": "R3",
+                "date": "2026-10-14",
+                "category": "meals",
+                "currency": "EUR",
+                "amount_cents": 800
+              }
+            ],
+            "totals_cents": {
+              "GBP": 3650,
+              "EUR": 800
+            },
+            "excluded_ids": [
+              "R4"
+            ],
+            "review_ids": []
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        }
+      ]
+    },
+    "update": {
+      "files": {
+        "inputs/receipts/R1.txt": "Receipt ID: R1\nDate: 2026-10-12\nMerchant: Stationery\nCurrency: GBP\nAmount in cents: 1250\n",
+        "inputs/receipts/R2.txt": "Receipt ID: R2\nDate: 2026-10-13\nMerchant: Rail\nCurrency: GBP\nAmount in cents: 2400\n",
+        "inputs/receipts/R3.txt": "Receipt ID: R3\nDate: 2026-10-14\nMerchant: Cafe\nCurrency: EUR\nAmount in cents: 800\n",
+        "inputs/receipts/R4.txt": "Receipt ID: R4\nDate: 2026-10-09\nMerchant: Stationery\nCurrency: GBP\nAmount in cents: 500\n",
+        "inputs/receipts/R5.txt": "Receipt ID: R5\nDate: 2026-10-14\nMerchant: Rail refund\nCurrency: GBP\nAmount in cents: -600\n",
+        "inputs/receipts/duplicate-R2.txt": "Receipt ID: R2\nDate: 2026-10-13\nMerchant: Rail\nCurrency: GBP\nAmount in cents: 2400\n",
+        "inputs/policy.md": "Report period: 2026-10-12 through 2026-10-16 inclusive. Stationery => supplies; Rail/Rail refund => travel; Cafe => meals. Separate currencies."
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Read every receipt and the policy. Produce an auditable expense report. Result shape: {receipts:[{id,date,category,currency,amount_cents}], totals_cents:{GBP:<number>,EUR:<number>}, excluded_ids, review_ids}. Deduplicate receipt IDs, exclude dates outside the period, preserve refunds, and flag unreadable amounts. Known totals exclude unknown amounts; state that limitation in the report.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "receipts": [
+              {
+                "id": "R1",
+                "date": "2026-10-12",
+                "category": "supplies",
+                "currency": "GBP",
+                "amount_cents": 1250
+              },
+              {
+                "id": "R2",
+                "date": "2026-10-13",
+                "category": "travel",
+                "currency": "GBP",
+                "amount_cents": 2400
+              },
+              {
+                "id": "R3",
+                "date": "2026-10-14",
+                "category": "meals",
+                "currency": "EUR",
+                "amount_cents": 800
+              },
+              {
+                "id": "R5",
+                "date": "2026-10-14",
+                "category": "travel",
+                "currency": "GBP",
+                "amount_cents": -600
+              }
+            ],
+            "totals_cents": {
+              "GBP": 3050,
+              "EUR": 800
+            },
+            "excluded_ids": [
+              "R4"
+            ],
+            "review_ids": []
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        }
+      ]
+    },
+    "problem": {
+      "files": {
+        "inputs/receipts/R1.txt": "Receipt ID: R1\nDate: 2026-10-12\nMerchant: Stationery\nCurrency: GBP\nAmount in cents: 1250\n",
+        "inputs/receipts/R2.txt": "Receipt ID: R2\nDate: 2026-10-13\nMerchant: Rail\nCurrency: GBP\nAmount in cents: 2400\n",
+        "inputs/receipts/R3.txt": "Receipt ID: R3\nDate: 2026-10-14\nMerchant: Cafe\nCurrency: EUR\nAmount in cents: 800\n",
+        "inputs/receipts/R4.txt": "Receipt ID: R4\nDate: 2026-10-09\nMerchant: Stationery\nCurrency: GBP\nAmount in cents: 500\n",
+        "inputs/receipts/R6.txt": "Receipt ID: R6\nDate: 2026-10-14\nMerchant: Stationery\nCurrency: GBP\nAmount in cents: [unreadable]\n",
+        "inputs/receipts/duplicate-R2.txt": "Receipt ID: R2\nDate: 2026-10-13\nMerchant: Rail\nCurrency: GBP\nAmount in cents: 2400\n",
+        "inputs/policy.md": "Report period: 2026-10-12 through 2026-10-16 inclusive. Stationery => supplies; Rail/Rail refund => travel; Cafe => meals. Separate currencies."
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Read every receipt and the policy. Produce an auditable expense report. Result shape: {receipts:[{id,date,category,currency,amount_cents}], totals_cents:{GBP:<number>,EUR:<number>}, excluded_ids, review_ids}. Deduplicate receipt IDs, exclude dates outside the period, preserve refunds, and flag unreadable amounts. Known totals exclude unknown amounts; state that limitation in the report.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "receipts": [
+              {
+                "id": "R1",
+                "date": "2026-10-12",
+                "category": "supplies",
+                "currency": "GBP",
+                "amount_cents": 1250
+              },
+              {
+                "id": "R2",
+                "date": "2026-10-13",
+                "category": "travel",
+                "currency": "GBP",
+                "amount_cents": 2400
+              },
+              {
+                "id": "R3",
+                "date": "2026-10-14",
+                "category": "meals",
+                "currency": "EUR",
+                "amount_cents": 800
+              },
+              {
+                "id": "R6",
+                "date": "2026-10-14",
+                "category": "supplies",
+                "currency": "GBP",
+                "amount_cents": null
+              }
+            ],
+            "totals_cents": {
+              "GBP": 3650,
+              "EUR": 800
+            },
+            "excluded_ids": [
+              "R4"
+            ],
+            "review_ids": [
+              "R6"
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        }
+      ]
+    }
+  }
+}

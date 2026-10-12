@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "case_id": "D08",
+  "title": "Interview preparation",
+  "provenance": {
+    "kind": "synthetic_inspired_by_firsthand_report",
+    "source_id": "S03",
+    "source_url": "https://kennytrinh.com/blog/from-chatbot-to-co-worker",
+    "researched_on": "2026-10-11"
+  },
+  "scope": "Fictional CV and role; grounded coverage, not hiring decisions or question quality",
+  "variants": {
+    "normal": {
+      "files": {
+        "inputs/cv.md": "[C1] Alex Morgan. Coordinated community events.\n[C2] Alex assisted the Orchard inventory project.\n",
+        "inputs/role.md": "[R1] Event coordination.\n[R2] Inventory project experience.\n[R3] Budget ownership.\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Prepare interview questions in outputs/questions.md from the fictional CV and role. The JSON result has coverage:[{requirement_id,evidence_ids}], inventory_responsibility (the CV's verb), and unsupported_requirement_ids. Missing experience should lead to a question, not an assertion or hiring recommendation.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "coverage": [
+              {
+                "requirement_id": "R1",
+                "evidence_ids": [
+                  "C1"
+                ]
+              },
+              {
+                "requirement_id": "R2",
+                "evidence_ids": [
+                  "C2"
+                ]
+              },
+              {
+                "requirement_id": "R3",
+                "evidence_ids": []
+              }
+            ],
+            "inventory_responsibility": "assisted",
+            "unsupported_requirement_ids": [
+              "R3"
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "text",
+          "path": "outputs/questions.md",
+          "min_chars": 120,
+          "contains": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        }
+      ]
+    },
+    "update": {
+      "files": {
+        "inputs/cv.md": "[C1] Alex Morgan. Coordinated community events.\n[C2] Alex led the Orchard inventory project.\n",
+        "inputs/role.md": "[R1] Event coordination.\n[R2] Inventory project experience.\n[R3] Budget ownership.\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Prepare interview questions in outputs/questions.md from the fictional CV and role. The JSON result has coverage:[{requirement_id,evidence_ids}], inventory_responsibility (the CV's verb), and unsupported_requirement_ids. Missing experience should lead to a question, not an assertion or hiring recommendation.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "coverage": [
+              {
+                "requirement_id": "R1",
+                "evidence_ids": [
+                  "C1"
+                ]
+              },
+              {
+                "requirement_id": "R2",
+                "evidence_ids": [
+                  "C2"
+                ]
+              },
+              {
+                "requirement_id": "R3",
+                "evidence_ids": []
+              }
+            ],
+            "inventory_responsibility": "led",
+            "unsupported_requirement_ids": [
+              "R3"
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "text",
+          "path": "outputs/questions.md",
+          "min_chars": 120,
+          "contains": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        }
+      ]
+    },
+    "problem": {
+      "files": {
+        "inputs/cv.md": "[C1] Alex Morgan. Coordinated community events.\n[C2] Alex assisted the Orchard inventory project.\n[C3] The Orchard newsletter project involved editing, not inventory.",
+        "inputs/role.md": "[R1] Event coordination.\n[R2] Inventory project experience.\n[R3] Budget ownership.\n"
+      },
+      "web_files": {},
+      "phases": [
+        {
+          "prompt": "Prepare interview questions in outputs/questions.md from the fictional CV and role. The JSON result has coverage:[{requirement_id,evidence_ids}], inventory_responsibility (the CV's verb), and unsupported_requirement_ids. Missing experience should lead to a question, not an assertion or hiring recommendation.\nSave the requested structured facts in outputs/result.json, as valid JSON with\nexactly the documented fields. IDs refer to the supplied input records. Use\nJSON null for unknown values; do not guess. Also save a useful human-readable\noutputs/report.md (at least 80 characters). Check the final files before finishing.\nThe report's existence is checked, but its prose quality is not automatically scored.\n",
+          "remove_before": [],
+          "provide_before": []
+        }
+      ],
+      "mutable_inputs": [],
+      "checks": [
+        {
+          "kind": "json",
+          "path": "outputs/result.json",
+          "expected": {
+            "coverage": [
+              {
+                "requirement_id": "R1",
+                "evidence_ids": [
+                  "C1"
+                ]
+              },
+              {
+                "requirement_id": "R2",
+                "evidence_ids": [
+                  "C2"
+                ]
+              },
+              {
+                "requirement_id": "R3",
+                "evidence_ids": []
+              }
+            ],
+            "inventory_responsibility": "assisted",
+            "unsupported_requirement_ids": [
+              "R3"
+            ]
+          }
+        },
+        {
+          "kind": "text",
+          "path": "outputs/report.md",
+          "min_chars": 80
+        },
+        {
+          "kind": "text",
+          "path": "outputs/questions.md",
+          "min_chars": 120,
+          "contains": [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        }
+      ]
+    }
+  }
+}
