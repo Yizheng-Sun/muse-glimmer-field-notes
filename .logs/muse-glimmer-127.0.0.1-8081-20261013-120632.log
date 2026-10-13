@@ -1,0 +1,5 @@
+0.00.051.221 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.166.523 I srv    load_model: loading model '/workspace/muse-glimmer-field-notes/./muse-glimmer/Muse-Glimmer-30B-KQuant-17GB-Q4_K_M.gguf'
+0.00.749.901 W load: setting token '<|message|>' (200023) attribute to USER_DEFINED (16), old attributes: 8
+0.00.749.904 W load: setting token '<|start|>' (200022) attribute to USER_DEFINED (16), old attributes: 8
+0.00.752.179 W load: special_eot_id is not in special_eog_ids - the tokenizer config may be incorrect
